@@ -2,10 +2,7 @@ package com.company.commands;
 
 import com.company.work_client.CommandInvoker;
 import com.company.work_client.InputDevice;
-
-import javax.lang.model.element.Name;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -21,24 +18,33 @@ public class ExecuteCommand extends AbstractCommand {
 
         @Override
         public void execute(String CommandArgs) {
-        boolean finished = false;
-        InputDevice device = new InputDevice();
-        Path REF = null;
+            boolean finished = false;
+            InputDevice device = new InputDevice();
+            Path REF = null;
             if (CommandArgs == null) {
                 System.out.println("Введите путь к файлу");
                 REF = device.ReadExecuteFilePath();
+                if(REF.toString().matches("[/\\\\]dev.*")) {
+                    System.out.println("Не могу исполнить данный файл");
+                    finished=true;
+                }
             } else {
+
                 Pattern p = Pattern.compile("-path (.+?)( -|$)");
                 Matcher m = p.matcher(CommandArgs);
+
                 if (m.find()) {
                     REF = Paths.get(m.group(1));
-                    if(m.group(1) == "/dev/null") {
+                    Pattern b = Pattern.compile("[/\\\\]dev.*");
+                    Matcher n = b.matcher(m.group(1));
+                    if (n.find()) {
                         System.out.println("Не могу исполнить данный файл");
+                        finished=true;
                     }
                 }
-                    else {
-                        System.out.println("Ожидался путь к файлу");
-                        finished = true;
+                else {
+                    System.out.println("Ожидался путь к файлу");
+                    finished = true;
                 }
             }
             if (!finished) {
@@ -50,7 +56,7 @@ public class ExecuteCommand extends AbstractCommand {
                     }
                 }
                 catch (IOException e) {
-                e.printStackTrace();
+                    System.out.println("Мне жаль, что так вышло((((");
                 }
             }
         }

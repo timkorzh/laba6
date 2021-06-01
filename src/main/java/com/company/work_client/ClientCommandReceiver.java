@@ -21,8 +21,10 @@ public class ClientCommandReceiver {
     }
 
     public void save() {
-        XMLParser xmlParser = new XMLParser(client.getFilePath());
-        xmlParser.saveCollection(client.getCollectionManagement());
+        if (client.getFilePath() != null && !client.getFilePath().matches("[/\\\\]dev.*")) {
+            XMLParser xmlParser = new XMLParser(client.getFilePath());
+            xmlParser.saveCollection(client.getCollectionManagement());
+        }
     }
 
     public void exit() {

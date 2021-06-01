@@ -13,6 +13,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.sql.SQLException;
+
 
 public class XMLParser {
     private final String filePath;
@@ -56,17 +58,22 @@ public class XMLParser {
                 Node groupAdminLocationY = null;
                 Node groupAdminLocationZ = null;
 
-                for( int I = 0; I < AdminElement.getChildNodes().getLength(); I++ ) {
+                for (int I = 0; I < AdminElement.getChildNodes().getLength(); I++) {
                     if (AdminElement.getChildNodes().item(I).getNodeType() == Node.ELEMENT_NODE) {
                         Element elem = (Element) AdminElement.getChildNodes().item(I);
 
                         switch (elem.getTagName()) {
-                            case ("GroupAdminName") : groupAdminName = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminPassport") : groupAdminPassport = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationX") : groupAdminLocationX = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationY") : groupAdminLocationY = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationZ") : groupAdminLocationZ = AdminElement.getChildNodes().item(I);
-                            break;
+                            case ("GroupAdminName"):
+                                groupAdminName = AdminElement.getChildNodes().item(I);
+                            case ("GroupAdminPassport"):
+                                groupAdminPassport = AdminElement.getChildNodes().item(I);
+                            case ("GroupAdminLocationX"):
+                                groupAdminLocationX = AdminElement.getChildNodes().item(I);
+                            case ("GroupAdminLocationY"):
+                                groupAdminLocationY = AdminElement.getChildNodes().item(I);
+                            case ("GroupAdminLocationZ"):
+                                groupAdminLocationZ = AdminElement.getChildNodes().item(I);
+                                break;
 
                         }
                     }
@@ -88,6 +95,8 @@ public class XMLParser {
             System.out.println("Ваш парсер не пашет, уважаемый пекарь(((");
         } catch (IOException e) {
             System.out.println("Ваш файл меня не устравивает, уважаемый пекарь(((");
+        } catch (NumberFormatException|NullPointerException e) {
+            System.out.println("В вашем файле указаны неверные данные");
         }
 
         return collectionManagement;

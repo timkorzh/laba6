@@ -12,8 +12,10 @@ public class LoadCommand extends AbstractCommand {
         }
         @Override
         public void execute(String CommandArgs) {
-        XMLParser parser = new XMLParser(client.getFilePath());
-        client.setCollectionManagement(parser.deParseCollection());
+        if(client.getFilePath() != null && !client.getFilePath().matches("[/\\\\]dev.*")) {
+            XMLParser parser = new XMLParser(client.getFilePath());
+            client.setCollectionManagement(parser.deParseCollection());
+        }
         }
 
         @Override

@@ -11,6 +11,12 @@ public class  Main {
         if(fileName == null) {
             System.out.println("Переменная среды \"INPUT_FILE_PATH\" пустая. Методы load и save не будут работать(");
         }
+        else {
+            if (fileName.matches("[/\\\\]dev.*")) {
+                System.out.println("Не могу исполнить данный файл");
+
+            }
+        }
         Client client = new Client(new CollectionManagement(), fileName);
         client.start();
     }
