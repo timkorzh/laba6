@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.Selector;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -49,7 +50,8 @@ public class Client {
         this.collectionManagement.getCollection().addAll(collectionManagement.getCollection());
     }
 
-    public void start(int PORT) throws SocketException {
+    public void start(int PORT) throws IOException {
+        Selector sel = Selector.open();
         commandInvoker.execute("load");
         System.out.println("Готов начать работу, уважаемый пекарь");
         byte b[] = new byte[10];
@@ -72,10 +74,13 @@ public class Client {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(!command.toString().equals("exit")) {
+            if(command.toString().equals("exit")) {
                 break;
             }
-            commandInvoker.execute(command.toString());
+            if(!command.toString().equals("")) {
+
+                commandInvoker.execute(command.toString());
+            }
         }
     }
 
