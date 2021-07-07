@@ -1,6 +1,12 @@
 package com.company.work_client;
 import com.company.collection_manage.CollectionManagement;
 import com.company.commands.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.*;
+import java.nio.channels.DatagramChannel;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
@@ -43,15 +49,33 @@ public class Client {
         this.collectionManagement.getCollection().addAll(collectionManagement.getCollection());
     }
 
-    public void start() {
+    public void start(int PORT) throws SocketException {
         commandInvoker.execute("load");
         System.out.println("Готов начать работу, уважаемый пекарь");
-        Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
+        byte b[] = new byte[10];
+        SocketAddress a =
+                new InetSocketAddress(PORT);
+        DatagramSocket s =
+                new DatagramSocket(a);
+        DatagramPacket i =
+                new DatagramPacket(b, b.length);
 
-        while (!line.equals("exit")) {
-            commandInvoker.execute(line);
-            line = scanner.nextLine();
+        StringBuilder command = new StringBuilder();
+        while (true) {
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                while(command.toString().endsWith("\n")) {
+                    s.receive(i);
+                    out.write(b);
+                    command.append(out.toString());
+                    Arrays.fill(b, (byte) 0);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(!command.toString().equals("exit")) {
+                break;
+            }
+            commandInvoker.execute(command.toString());
         }
     }
 
