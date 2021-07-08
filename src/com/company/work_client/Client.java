@@ -60,25 +60,19 @@ public class Client {
         DatagramPacket i =
                 new DatagramPacket(b, b.length);
 
-        StringBuilder commandBuilder = new StringBuilder();
-        String command;
+        String command = "";
         while (true) {
-            commandBuilder.setLength(0);
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                while(!commandBuilder.toString().endsWith("\n")) {
-                    for (byte cmd_byte : commandBuilder.toString().getBytes()) {
-                        System.out.print(cmd_byte + " ");
-                        System.out.println();
-                    }
+                while(!command.endsWith("\n")) {
                     s.receive(i);
                     out.write(b);
-                    commandBuilder.append(out.toString().replaceAll("\00", ""));
+                    command = out.toString().replaceAll("\00", "");
                     Arrays.fill(b, (byte) 0);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            command = commandBuilder.substring(0, commandBuilder.length() - 1);
+            command = command.substring(0, command.length() - 1);
             if(command.equals("exit")) {
                 break;
             }
