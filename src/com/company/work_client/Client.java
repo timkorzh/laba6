@@ -5,10 +5,8 @@ import com.company.commands.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.*;
-import java.nio.channels.DatagramChannel;
 import java.nio.channels.Selector;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Client {
     private final CommandInvoker commandInvoker;
@@ -62,24 +60,31 @@ public class Client {
         DatagramPacket i =
                 new DatagramPacket(b, b.length);
 
-        StringBuilder command = new StringBuilder();
+        StringBuilder commandBuilder = new StringBuilder();
+        String command;
         while (true) {
+            commandBuilder.setLength(0);
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                while(command.toString().endsWith("\n")) {
+                while(!commandBuilder.toString().endsWith("\n")) {
+                    for (byte cmd_byte : commandBuilder.toString().getBytes()) {
+                        System.out.print(cmd_byte + " ");
+                        System.out.println();
+                    }
                     s.receive(i);
                     out.write(b);
-                    command.append(out.toString());
+                    commandBuilder.append(out.toString().replaceAll("\00", ""));
                     Arrays.fill(b, (byte) 0);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(command.toString().equals("exit")) {
+            command = commandBuilder.substring(0, commandBuilder.length() - 1);
+            if(command.equals("exit")) {
                 break;
             }
-            if(!command.toString().equals("")) {
+            if(!command.equals("")) {
 
-                commandInvoker.execute(command.toString());
+                commandInvoker.execute(command);
             }
         }
     }
