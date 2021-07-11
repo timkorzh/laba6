@@ -1,4 +1,4 @@
-package com.company.work_client;
+package CLient;
 
 import collection_objects.*;
 import com.company.collection_manage.*;
@@ -108,6 +108,7 @@ class AdminNameValidator implements IValidator {
         return "Введите имя в соответствии с форматом, уважаемый пекарь";
     }
 }
+
 class AdminPassportValidator implements IValidator {
 
     @Override
@@ -120,6 +121,7 @@ class AdminPassportValidator implements IValidator {
         return "Введите паспортные данные в соответствии с форматом, уважаемый пекарь";
     }
 }
+
 class AdminLocationValidator implements IValidator {
 
     @Override
@@ -132,6 +134,7 @@ class AdminLocationValidator implements IValidator {
         return "Введите координаты в соответствии с форматом, уважаемый пекарь";
     }
 }
+
 public class InputDevice {
 
     ArrayList<quiz> questions = new ArrayList<>();

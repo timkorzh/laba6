@@ -1,5 +1,6 @@
 package com.company.parsers;
 
+import collection_objects.*;
 import com.company.collection_manage.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;

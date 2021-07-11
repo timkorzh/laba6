@@ -1,4 +1,4 @@
-package com.company.collection_manage;
+package collection_objects;
 
 public class Person {
     public Person() {
@@ -6,7 +6,7 @@ public class Person {
         this.passportID = "";
         this.location = new Location();
     }
-    public Person(String name,String passportID,Location location) {
+    public Person(String name, String passportID, Location location) {
         this.name = name;
         this.passportID = passportID;
         this.location = location;

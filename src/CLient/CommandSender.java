@@ -20,6 +20,27 @@ public class CommandSender {
             datagramChannel.send(f, a);
         }
     }
-
-
+public class ReplyReceiver {
+        public ReplyReceiver(DatagramChannel datagramChannel) {
+            this.datagramChannel = datagramChannel;
+        }
+        private DatagramChannel datagramChannel;
+}
+    public String receive() throws IOException {
+        ByteBuffer f = ByteBuffer.allocate(10);
+        SocketAddress s = datagramChannel.receive(f);
+        for(int i = 0; i < 10 && s == null; i++) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            s = datagramChannel.receive(f);
+        }
+        if(s == null) {
+            return null;
+        }
+        //TODO: исправить, чтобы можно было получать много пакетов
+        return new String(f.array());
+    }
 }

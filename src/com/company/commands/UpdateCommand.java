@@ -1,7 +1,7 @@
 package com.company.commands;
 
+import collection_objects.StudyGroup;
 import com.company.collection_manage.CollectionManagement;
-import com.company.collection_manage.StudyGroup;
 import com.company.work_client.InputDevice;
 
 import java.util.regex.Matcher;

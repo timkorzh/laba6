@@ -1,4 +1,4 @@
-package com.company.collection_manage;
+package collection_objects;
 
 public class Coordinates {
     public Coordinates() {
