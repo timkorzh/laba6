@@ -1,4 +1,4 @@
-package com.company.work_client;
+package com.company.server;
 
 import collection_objects.*;
 import com.company.collection_manage.*;

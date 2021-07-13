@@ -1,20 +1,20 @@
 package com.company.commands;
 
 import com.company.parsers.XMLParser;
-import com.company.work_client.Client;
+import com.company.server.RequestReader.RequestReader;
 
 public class LoadCommand extends AbstractCommand {
-    private final Client client;
+    private final RequestReader requestReader;
 
-    public LoadCommand(Client client) {
-        this.client = client;
+    public LoadCommand(RequestReader requestReader) {
+        this.requestReader = requestReader;
 
         }
         @Override
         public void execute(String CommandArgs) {
-        if(client.getFilePath() != null && !client.getFilePath().matches("[/\\\\]dev.*")) {
-            XMLParser parser = new XMLParser(client.getFilePath());
-            client.setCollectionManagement(parser.deParseCollection());
+        if(requestReader.getFilePath() != null && !requestReader.getFilePath().matches("[/\\\\]dev.*")) {
+            XMLParser parser = new XMLParser(requestReader.getFilePath());
+            requestReader.setCollectionManagement(parser.deParseCollection());
         }
         }
 

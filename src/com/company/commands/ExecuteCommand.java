@@ -1,7 +1,7 @@
 package com.company.commands;
 
-import com.company.work_client.CommandInvoker;
-import com.company.work_client.InputDevice;
+import com.company.server.CommandInvoker.CommandInvoker;
+import com.company.server.InputDevice;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

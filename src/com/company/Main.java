@@ -2,12 +2,18 @@ package com.company;
 
 
 import com.company.collection_manage.CollectionManagement;
-import com.company.work_client.Client;
+import com.company.server.RequestReader.RequestReader;
 
 import java.io.IOException;
 import java.net.SocketException;
 
 public class  Main {
+    //TODO: proper names and packages
+    //TODO: request ending
+    //TODO: Модуль приёма подключений. (RequestBuilder)
+    //TODO: Модуль чтения запроса. (RequestReader)
+    //TODO: Модуль обработки полученных команд. (CommandInvoker)
+    //TODO: Модуль отправки ответов клиенту. (ServerPrintStream)
 
     public static void main(String[] args) throws SocketException, IOException {
         String fileName = System.getenv("INPUT_FILE_PATH");
@@ -20,8 +26,8 @@ public class  Main {
 
             }
         }
-        Client client = new Client(new CollectionManagement(), fileName);
+        RequestReader requestReader = new RequestReader(new CollectionManagement(), fileName);
         int PORT = 22;
-        client.start(PORT);
+        requestReader.start(PORT);
     }
 }

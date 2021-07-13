@@ -1,39 +1,25 @@
-package com.company.work_client;
+package com.company.server.RequestReader;
 import com.company.collection_manage.CollectionManagement;
 import com.company.commands.*;
+import com.company.server.CommandInvoker.CommandInvoker;
+import com.company.server.CommandInvoker.ClientCommandReceiver;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.*;
-import java.nio.channels.Selector;
 import java.util.Arrays;
-
-public class Client {
+/**
+ * Класс для распознавния команды
+ */
+public class RequestReader {
     private final CommandInvoker commandInvoker;
     private final CollectionManagement collectionManagement;
     private final String filePath;
 
-    public Client(CollectionManagement collectionManagement, String filePath) {
+    public RequestReader(CollectionManagement collectionManagement, String filePath) {
         this.collectionManagement = collectionManagement;
-        this.commandInvoker = new CommandInvoker();
-        ClientCommandReceiver clientCommandReceiver = new ClientCommandReceiver(this);
+        this.commandInvoker = new CommandInvoker(this);
         this.filePath = filePath;
-        commandInvoker.register("help", new HelpCommand(clientCommandReceiver));
-        commandInvoker.register("clear", new ClearCommand(this.collectionManagement));
-        commandInvoker.register("show", new ShowCommand(this.collectionManagement));
-        commandInvoker.register("save", new SaveCommand(clientCommandReceiver));
-        commandInvoker.register("add", new AddCommand(this.collectionManagement));
-        commandInvoker.register("history", new HistoryCommand(clientCommandReceiver.client));
-        commandInvoker.register("update", new UpdateCommand(this.collectionManagement));
-        commandInvoker.register("min_by_students_count", new MinByStudentsCountCommand(this.collectionManagement));
-        commandInvoker.register("remove_by_id", new RemoveByIdCommand(this.collectionManagement));
-        commandInvoker.register("load", new LoadCommand(this));
-        commandInvoker.register("remove_lower", new RemoveLowerCommand(this.collectionManagement));
-        commandInvoker.register("remove_higher", new RemoveHigherCommand(this.collectionManagement));
-        commandInvoker.register("count_greater_than_form_of_education", new CountGreaterCommand(this.collectionManagement));
-        commandInvoker.register("filter_by_semester_enum", new FilterBySemCommand(this.collectionManagement));
-        commandInvoker.register("info", new InfoCommand(this.collectionManagement));
-        commandInvoker.register("execute_script", new ExecuteCommand(this.commandInvoker));
     }
 
     public CommandInvoker getCommandInvoker() {
@@ -49,10 +35,9 @@ public class Client {
     }
 
     public void start(int PORT) throws IOException {
-        Selector sel = Selector.open();
         commandInvoker.execute("load");
         System.out.println("Готов начать работу, уважаемый пекарь");
-        byte b[] = new byte[10];
+        byte[] b = new byte[10];
         SocketAddress a =
                 new InetSocketAddress(PORT);
         DatagramSocket s =

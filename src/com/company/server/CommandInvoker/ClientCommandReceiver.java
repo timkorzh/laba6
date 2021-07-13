@@ -1,0 +1,36 @@
+package com.company.server.CommandInvoker;
+import com.company.commands.AbstractCommand;
+import com.company.parsers.XMLParser;
+import com.company.server.RequestReader.RequestReader;
+
+import java.util.HashMap;
+
+
+public class ClientCommandReceiver {
+    RequestReader requestReader;
+//TODO: ?
+
+    public ClientCommandReceiver(RequestReader requestReader) {
+        this.requestReader = requestReader;
+    }
+
+    public void help() {
+        HashMap<String, AbstractCommand> hashMap = requestReader.getCommandInvoker().getHashMap();
+        System.out.printf("%-45s %-45s %n", "ИМЯ КОМАНДЫ", "ОПИСАНИЕ");
+        for (String commandName : hashMap.keySet()) {
+            System.out.printf("%-45s %-45s %n", commandName, requestReader.getCommandInvoker().getHashMap().get(commandName).describe());
+
+        }
+    }
+
+    public void save() {
+        if (requestReader.getFilePath() != null && !requestReader.getFilePath().matches("[/\\\\]dev.*")) {
+            XMLParser xmlParser = new XMLParser(requestReader.getFilePath());
+            xmlParser.saveCollection(requestReader.getCollectionManagement());
+        }
+    }
+
+    public void exit() {
+
+    }
+}

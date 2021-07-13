@@ -1,15 +1,15 @@
 package com.company.commands;
 
-import com.company.work_client.Client;
+import com.company.server.RequestReader.RequestReader;
 
 public class HistoryCommand extends AbstractCommand {
-    Client client;
+    RequestReader requestReader;
 
-    public HistoryCommand(Client client) {
-        this.client = client;}
+    public HistoryCommand(RequestReader requestReader) {
+        this.requestReader = requestReader;}
         @Override
             public void execute(String CommandArgs) {
-            System.out.println("Последние команды:" + client.getCommandInvoker().History.toString());
+            System.out.println("Последние команды:" + requestReader.getCommandInvoker().History.toString());
         }
 
         @Override

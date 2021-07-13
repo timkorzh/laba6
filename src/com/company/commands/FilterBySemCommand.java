@@ -1,7 +1,7 @@
 package com.company.commands;
 
 import com.company.collection_manage.CollectionManagement;
-import com.company.work_client.InputDevice;
+import com.company.server.InputDevice;
 
 import java.util.InputMismatchException;
 import java.util.regex.Matcher;

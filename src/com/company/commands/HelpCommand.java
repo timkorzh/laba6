@@ -1,6 +1,6 @@
 package com.company.commands;
 
-import com.company.work_client.ClientCommandReceiver;
+import com.company.server.CommandInvoker.ClientCommandReceiver;
 
 public class HelpCommand extends AbstractCommand {
     private final ClientCommandReceiver clientCommandReceiver;
