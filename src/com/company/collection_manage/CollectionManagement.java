@@ -1,7 +1,7 @@
 package com.company.collection_manage;
 
+import com.company.server.InputDevice;
 import collection_objects.*;
-import com.company.work_client.InputDevice;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 
