@@ -49,18 +49,18 @@ public class CollectionManagement {
     }
 
     public void add() {
-        collection.add(new InputDevice().add());
-    }
-    public void add(String CommandArgs) {
-        collection.add(new InputDevice().addFromFile(CommandArgs));
+        collection.add(InputDevice.input());
     }
 
-    InputDevice device = new InputDevice();
+    public void add(String CommandArgs) {
+        collection.add(InputDevice.inputFromFile(CommandArgs));
+    }
+
     public void edit() {
-        device.edit(this);
+        InputDevice.edit(this);
     }
     public void edit(StudyGroup studyGroup, String CommandArgs) {
-        device.EditFromFile(studyGroup, CommandArgs);
+        InputDevice.editFromFile(studyGroup, CommandArgs);
     }
 
 }

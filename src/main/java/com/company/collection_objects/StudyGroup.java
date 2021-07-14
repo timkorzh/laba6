@@ -1,10 +1,11 @@
 package com.company.collection_objects;
 
+import java.io.*;
 import java.time.LocalDateTime;
 
-public class StudyGroup {
+public class StudyGroup implements Serializable {
 
-
+//TODO: compareTo
     public StudyGroup() {
         this("", new Coordinates(), 0, null, Semester.FIRST, new Person());
 
@@ -18,7 +19,7 @@ public class StudyGroup {
         this.semesterEnum = semester;
         this.groupAdmin = admin;
         creationDate = LocalDateTime.now();
-        id = ++GroupCounter;
+        id = ++groupCounter;
     }
 
     public void setStudentsCount(Integer studentsCount) {
@@ -45,8 +46,15 @@ public class StudyGroup {
         return id;
     }
 
-    public static int GroupCounter;
+    private static int groupCounter;
 
+    public void updateId() {
+        id = ++groupCounter;
+    }
+
+    public static int getGroupCounter() {
+        return groupCounter;
+    }
 
 
     public FormOfEducation getFormOfEducation() {
@@ -94,16 +102,12 @@ public class StudyGroup {
         return coordinates;
     }
 
-
-    public static int getGroupCounter() {
-        return GroupCounter;
-    }
-
     public Integer getStudentsCount() {
         return studentsCount;
     }
 
 
     public void getCreationDate(String nodeValue) {
+        //TODO: попытаться убрать
     }
 }

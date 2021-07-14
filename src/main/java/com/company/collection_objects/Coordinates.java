@@ -1,6 +1,8 @@
 package com.company.collection_objects;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     public Coordinates() {
         this.y= (float) 0;
         this.x = 0;

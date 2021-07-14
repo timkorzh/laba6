@@ -25,7 +25,7 @@ public class ExecuteCommand extends AbstractCommand {
             Path REF = null;
             if (CommandArgs == null) {
                 System.out.println("Введите путь к файлу");
-                REF = device.ReadExecuteFilePath();
+                REF = device.readExecuteFilePath();
                 if(REF.toString().matches("[/\\\\]dev.*")) {
                     System.out.println("Не могу исполнить данный файл");
                     finished=true;

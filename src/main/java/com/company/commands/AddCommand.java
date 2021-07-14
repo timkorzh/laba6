@@ -5,7 +5,6 @@ import com.company.validation.InputDevice;
 
 public class AddCommand extends AbstractCommand {
     private final CollectionManagement collectionManagement;
-    InputDevice device = new InputDevice();
 
     public AddCommand(CollectionManagement collectionManagement) {
         this.collectionManagement = collectionManagement;
@@ -24,7 +23,7 @@ public class AddCommand extends AbstractCommand {
 
     @Override
     public String describe() {
-        return ("Добавляет новый элемент в коллекцию." + device.GetScriptName() + "\n Чтобы выйти из команды в режиме построчного ввода, напишите: exitcmd");
+        return ("Добавляет новый элемент в коллекцию." + InputDevice.getScriptName() + "\n Чтобы выйти из команды в режиме построчного ввода, напишите: exitcmd");
     }
 
 }
