@@ -1,12 +1,14 @@
 package com.company.server;
 
 import collection_objects.*;
+import collection_objects.StudyGroupField.StudyGroupField;
 import com.company.collection_manage.*;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -14,21 +16,21 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 interface IValidator {
-    boolean IsValid(String input);
+    boolean isValid(String input);
 
-    String ErrorMessage();
+    String errorMessage();
 }
 
 
 class NameValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         return input.matches("\\w[\\w\\s]*");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите любые символы кроме пустой строки и пробела";
     }
 }
@@ -36,13 +38,13 @@ class NameValidator implements IValidator {
 class CoordinatesValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
 
         return input.matches("\\d+; ?[-]?[0-9]*\\.?,?[0-9]+");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите координаты в формате X; Y";
     }
 }
@@ -50,12 +52,12 @@ class CoordinatesValidator implements IValidator {
 class StudentsCountValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
          return input.matches("[1-9]\\d{0,8}");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите число";
     }
 }
@@ -64,7 +66,7 @@ class FormOfEducationValidator implements IValidator {
 
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         try {
             Integer.parseInt(input);
             return(Integer.parseInt(input) < FormOfEducation.values().length);
@@ -74,14 +76,14 @@ class FormOfEducationValidator implements IValidator {
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите одно из указанных чисел, уважаемый пекарь";
     }
 }
 
 class SemesterValidator implements IValidator {
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         try {
             Integer.parseInt(input);
             return(Integer.parseInt(input) < Semester.values().length);
@@ -91,7 +93,7 @@ class SemesterValidator implements IValidator {
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите одно из указанных чисел, уважаемый пекарь";
     }
 }
@@ -99,80 +101,91 @@ class SemesterValidator implements IValidator {
 class AdminNameValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         return input.matches("([A-Za-zА-Яа-я\\-]+)\\s*([A-Za-zА-Яа-я]+)");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите имя в соответствии с форматом, уважаемый пекарь";
     }
 }
 class AdminPassportValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         return input.matches("^\\d{4}\\s\\d{6}");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите паспортные данные в соответствии с форматом, уважаемый пекарь";
     }
 }
 class AdminLocationValidator implements IValidator {
 
     @Override
-    public boolean IsValid(String input) {
+    public boolean isValid(String input) {
         return input.matches("\\d+\\.?,?\\d*; ?\\d+;? ?[-]?\\d*\\.?,?\\d*");
     }
 
     @Override
-    public String ErrorMessage() {
+    public String errorMessage() {
         return "Введите координаты в соответствии с форматом, уважаемый пекарь";
     }
 }
 public class InputDevice {
 
-    ArrayList<quiz> questions = new ArrayList<>();
+    private static ArrayList<Quiz> questions = generateQuestions();
 
-    public InputDevice() {
-
-        questions.add(new quiz("Имя группы", new NameValidator(), "gName", true));
-        questions.add(new quiz("Координаты группы в формате X(1); Y(1,0)", new CoordinatesValidator(), "gCoords", true));
-        questions.add(new quiz("Число студентов в группе", new StudentsCountValidator(), "stCount", true));
-        questions.add(new quiz("Форма обучения " + FormOfEducation.GetStringValues(), new FormOfEducationValidator(), "foedu", false));
-        questions.add(new quiz("Семестр " + Semester.GetStringValues(), new SemesterValidator(), "sem", true));
-        questions.add(new quiz("Имя админа группы(Фамилия Имя)", new AdminNameValidator(), "aName", true));
-        questions.add(new quiz("Серия и номер паспорта(пример: 1234 123456) админа группы", new AdminPassportValidator(), "passport", false));
-        questions.add(new quiz("Введите координаты в формате X(0,0); Y(0); Z(-1,0)", new AdminLocationValidator(), "aCoords", false));
-
+    private static ArrayList<Quiz> generateQuestions() {
+        ArrayList<Quiz> questions = new ArrayList<>();
+        questions.add(new Quiz("Имя группы", new NameValidator(), StudyGroupField.NAME.getScriptName(), true));
+        questions.add(new Quiz("Координаты группы в формате X(1); Y(1,0)", new CoordinatesValidator(), StudyGroupField.COORDINATES.getScriptName(), true));
+        questions.add(new Quiz("Число студентов в группе", new StudentsCountValidator(), StudyGroupField.STUDENTS_COUNT.getScriptName(), true));
+        questions.add(new Quiz("Форма обучения " + FormOfEducation.GetStringValues(), new FormOfEducationValidator(), StudyGroupField.FORM_OF_EDUCATION.getScriptName(), false));
+        questions.add(new Quiz("Семестр " + Semester.GetStringValues(), new SemesterValidator(), StudyGroupField.SEMESTER.getScriptName(), true));
+        questions.add(new Quiz("Имя админа группы(Фамилия Имя)", new AdminNameValidator(), StudyGroupField.ADMIN_NAME.getScriptName(), true));
+        questions.add(new Quiz("Серия и номер паспорта(пример: 1234 123456) админа группы", new AdminPassportValidator(), StudyGroupField.ADMIN_PASSPORT.getScriptName(), false));
+        questions.add(new Quiz("Введите координаты в формате X(0,0); Y(0); Z(-1,0)", new AdminLocationValidator(), StudyGroupField.ADMIN_LOCATION.getScriptName(), false));
+        return questions;
     }
 
-    public class quiz {
+    private static void nullQuizAnswers() {
+        for (Quiz quiz : questions) {
+            quiz.nullAnswer();
+        }
+    }
+
+    private static class Quiz {
+        //TODO: только ответы в объектах -- всё остальное статично
         public String question;
         public String answer;
         public IValidator validator;
-        public String ScriptName;
-        public boolean Important;
+        public String scriptName;
+        public boolean important;
 
-        public quiz(String question, IValidator validator, String ScriptName, boolean Important) {
+        public Quiz(String question, IValidator validator, String scriptName, boolean important) {
             this.question = question;
             this.validator = validator;
-            this.ScriptName = ScriptName;
-            this.Important = Important;
+            this.scriptName = scriptName;
+            this.important = important;
+        }
+
+        public void nullAnswer() {
+            answer = null;
         }
     }
-    public String GetScriptName() {
+    public static String getScriptName() {
 
         StringBuilder Keys = new StringBuilder("\n" + "Ключи для ввода данных: ");
         for (int i = 0; i < 8; i++) {
-          Keys.append(String.format("%n-%-45s  %-45s", questions.get(i).ScriptName, "[" + questions.get(i).question + "]"));
+          Keys.append(String.format("%n-%-45s  %-45s", questions.get(i).scriptName, "[" + questions.get(i).question + "]"));
         }
         return Keys.toString();
     }
 
-    public int RemoveById() throws InputMismatchException {
+    public static int removeById() throws InputMismatchException {
         int RemoveById;
 
         Scanner scanner = new Scanner(System.in);
@@ -180,13 +193,13 @@ public class InputDevice {
         RemoveById = scanner.nextInt();
         return RemoveById;
     }
-    public enum RemoveMode {
+    public static enum RemoveMode {
         High,
         Low,
         Equals
     }
 
-    public void remove(CollectionManagement collectionManagement, int RemoveById, RemoveMode Equals) {
+    public static void remove(CollectionManagement collectionManagement, int RemoveById, RemoveMode Equals) {
         try {
             if (collectionManagement.getCollection().stream().noneMatch(a -> a.getId() == RemoveById)) {
                 System.out.println("Ничего не нашёл по этому номеру:((");
@@ -207,7 +220,7 @@ public class InputDevice {
 
     }
 
-    public int ReadFormOfEducation() throws InputMismatchException {
+    public static int readFormOfEducation() throws InputMismatchException {
         int FormEducation;
 
         Scanner scanner = new Scanner(System.in);
@@ -216,18 +229,18 @@ public class InputDevice {
         return FormEducation;
     }
 
-    public void countFormOfEducation(CollectionManagement collectionManagement, Integer FormEducation) {
+    public static void countFormOfEducation(CollectionManagement collectionManagement, Integer FormEducation) {
 
         FormOfEducationValidator I = new FormOfEducationValidator();
-        if (I.IsValid(FormEducation.toString())) {
+        if (I.isValid(FormEducation.toString())) {
             long b = collectionManagement.getCollection().stream().filter(a -> a.getFormOfEducation().ordinal() > FormEducation).count();
             System.out.println("Количество элементов, значение поля formOfEducation которых больше заданного: " + b);
         } else {
-            System.out.println(I.ErrorMessage());
+            System.out.println(I.errorMessage());
         }
     }
 
-    public Path ReadExecuteFilePath() {
+    public static Path readExecuteFilePath() {
 
         Scanner scanner = new Scanner(System.in);
         String ExecuteFilePath = scanner.next();
@@ -241,7 +254,7 @@ public class InputDevice {
 
 
     }
-    public int ReadFilterSem() {
+    public static int readFilterSem() {
         int Sem;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());
@@ -249,11 +262,11 @@ public class InputDevice {
         return Sem;
 
     }
-    public void filterBySem(CollectionManagement collectionManagement, Integer Sem) {
+    public static void filterBySem(CollectionManagement collectionManagement, Integer Sem) {
 
         try {
             SemesterValidator I = new SemesterValidator();
-            if (I.IsValid(Sem.toString())) {
+            if (I.isValid(Sem.toString())) {
                long Count = collectionManagement.getCollection().stream().filter(a -> a.getSemesterEnum().ordinal() == Sem).count();
 
                 if( Count == 0) {
@@ -264,37 +277,73 @@ public class InputDevice {
                     b.forEach(n -> System.out.println("Элементы, значение поля semesterEnum которых равно заданному: " + n.getId() + " " + n.getName()));
                 }
             } else {
-                System.out.println(I.ErrorMessage());
+                System.out.println(I.errorMessage());
             }
         } catch (InputMismatchException Ex) {
             System.out.println("Введите число");
         }
     }
 
-    public void edit(CollectionManagement collectionManagement) {
+    private interface StudyGroupFieldParser {
+        void parseValue(StudyGroup studyGroup, String value);
+    }
 
-        StudyGroup GroupElement = null;
+    private final static HashMap<String, StudyGroupFieldParser> fieldParsers = fillFieldParsers();
+
+    private static HashMap<String, StudyGroupFieldParser> fillFieldParsers() {
+        HashMap<String, StudyGroupFieldParser> map = new HashMap<>();
+        map.put(StudyGroupField.NAME.getScriptName(), StudyGroup::setName);
+        map.put(StudyGroupField.COORDINATES.getScriptName(),
+                (studyGroup, value) -> studyGroup.getCoordinates().parseString(value));
+        map.put(StudyGroupField.STUDENTS_COUNT.getScriptName(),
+                (studyGroup, value) -> studyGroup.setStudentsCount(Integer.parseInt(value)));
+        map.put(StudyGroupField.FORM_OF_EDUCATION.getScriptName(),
+                (studyGroup, value) -> studyGroup.setFormOfEducation(FormOfEducation.values()[Integer.parseInt(value)]));
+        map.put(StudyGroupField.SEMESTER.getScriptName(),
+                (studyGroup, value) -> studyGroup.setSemesterEnum(Semester.values()[Integer.parseInt(value)]));
+        map.put(StudyGroupField.ADMIN_NAME.getScriptName(),
+                (studyGroup, value) -> studyGroup.getGroupAdmin().setName(value));
+        map.put(StudyGroupField.ADMIN_PASSPORT.getScriptName(),
+                (studyGroup, value) -> studyGroup.getGroupAdmin().setPassportID(value));
+        map.put(StudyGroupField.ADMIN_LOCATION.getScriptName(),
+                (studyGroup, value) -> studyGroup.getGroupAdmin().setLocation(new Location(value)));
+        return map;
+    }
+
+    private static void printQuizAnswers() {
+        for (Quiz quiz : questions) {
+            System.out.println(quiz.answer);
+        }
+    }
+
+    private static String assignQuizAnswers(StudyGroup studyGroup) {
+        StringBuilder keysBuilder = new StringBuilder();
+        for (Quiz quiz : questions) {
+            String answer = quiz.answer;
+            String key = quiz.scriptName;
+            if (answer != null) {
+                fieldParsers.get(key).parseValue(studyGroup, answer);
+                keysBuilder.append(" ").append(key);
+            }
+        }
+        return keysBuilder.toString().trim();
+    }
+
+    private static boolean acceptAnswer(Quiz quiz, String answer) {
+        if (quiz.validator != null && !quiz.validator.isValid(answer)) {
+            return false;
+        } else {
+            quiz.answer = answer;
+            return true;
+        }
+    }
+
+    private static String fillGroupFromSysIn(StudyGroup studyGroup, String skipQuestionExpr) {
+
+        nullQuizAnswers();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите ID группы для редактирования");
 
-        try {
-            int GroupId = scanner.nextInt();
-            for (StudyGroup studyGroup : collectionManagement.getCollection()) {
-                if (GroupId == studyGroup.getid()) {
-                    GroupElement = studyGroup;
-                }
-            }
-            if (GroupElement == null) {
-                System.out.println("Ничего не нашёл по этому номеру:((");
-                return;
-            }
-        }
-        catch (InputMismatchException Ex) {
-            System.out.println("Введите число");
-            return;
-        }
-
-        for (quiz quiz : questions) {
+        for (Quiz quiz : questions) {
 
             boolean ResultOK = false;
             //до тех пор пока не ввел правильное
@@ -303,209 +352,78 @@ public class InputDevice {
                 System.out.println("(" + (questions.indexOf(quiz) + 1) + "/" + questions.size()+ ")" + quiz.question);
                 String name = scanner.nextLine();
                 //Проверяем надо ли что-то менять
-                if (name.equals("N")) {
+                if (skipQuestionExpr != null && name.equals(skipQuestionExpr)) {
                     ResultOK = true;
                 }
                 else {
-                        if (name.equals("exitcmd")) {
-                            System.out.println("Выходим из команды add, пекарь");
-                            return;
-                        }
-                        else {
-                            if (quiz.validator != null) {
-                                if (quiz.validator.IsValid(name)) {
-                                    quiz.answer = name;
-                                    ResultOK = true;
-                                } else {
-                                    System.out.println(quiz.validator.ErrorMessage());
-                                }
-                            } else {
-                                quiz.answer = name;
-                                ResultOK = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-        for (quiz answer : questions) {
-            System.out.println(answer.answer);
-        }
-        Person Admin = GroupElement.getGroupAdmin();
-        if (questions.get(5).answer != null) {
-            Admin.setName(questions.get(5).answer);
-        }
-        if (questions.get(6).answer != null) {
-            Admin.setPassportID(questions.get(6).answer);
-        }
-        if (questions.get(7).answer != null) {
-            Admin.setLocation(new Location(questions.get(7).answer));
-        }
-        if (questions.get(0).answer != null) {
-            GroupElement.setName(questions.get(0).answer);
-        }
-        if (questions.get(1).answer != null) {
-            GroupElement.getCoordinates().parseString(questions.get(1).answer);
-        }
-        if (questions.get(2).answer != null) {
-            GroupElement.setStudentsCount(Integer.parseInt(questions.get(2).answer));
-        }
-        if (questions.get(3).answer != null) {
-            GroupElement.setFormOfEducation(FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)]);
-        }
-        if (questions.get(4).answer != null) {
-            GroupElement.setSemesterEnum(Semester.values()[Integer.parseInt(questions.get(4).answer)]);
-        }
-
-    }
-
-    public void EditFromFile(StudyGroup studyGroup, String CommandArgs) {
-
-        for(quiz Question : questions) {
-            Pattern p = Pattern.compile("-" + Question.ScriptName + "(.+?)( -|$)");
-            Matcher m = p.matcher(CommandArgs);
-            if (m.find()) {
-
-                if (Question.validator != null) {
-                    String FoundAnswer = m.group(1).trim();
-                    if (Question.validator.IsValid(FoundAnswer)) {
-                        Question.answer = FoundAnswer;
-                    }
-                }
-            }
-        }
-        for (quiz answer : questions) {
-            System.out.println(answer.answer);
-        }
-
-        Person Admin = studyGroup.getGroupAdmin();
-
-        if (questions.get(0).answer != null) {
-            studyGroup.setName(questions.get(0).answer);
-        }
-        if (questions.get(1).answer != null) {
-            studyGroup.getCoordinates().parseString(questions.get(1).answer);
-        }
-        if (questions.get(2).answer != null) {
-            studyGroup.setStudentsCount(Integer.parseInt(questions.get(2).answer));
-        }
-        if (questions.get(3).answer != null) {
-            studyGroup.setFormOfEducation(FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)]);
-        }
-        if (questions.get(4).answer !=null) {
-            studyGroup.setSemesterEnum(Semester.values()[Integer.parseInt(questions.get(4).answer)]);
-        }
-        Admin.setName(questions.get(5).answer);
-        if (questions.get(6).answer != null) {
-            Admin.setPassportID(questions.get(6).answer) ;
-        }
-        if (questions.get(7).answer != null) {
-            Admin.setLocation(new Location(questions.get(7).answer));
-        }
-    }
-
-    public StudyGroup add() {
-        Scanner scanner = new Scanner(System.in);
-
-        for (quiz quiz : questions) {
-            boolean ResultOK = false;
-
-            while (!ResultOK) {
-
-                System.out.println("(" + (questions.indexOf(quiz) + 1) + "/" + questions.size()+ ")" + quiz.question);
-                String name = scanner.nextLine();
-
-                if (name.equals("exitcmd")) {
-                    System.out.println("Выходим из команды add, пекарь");
-                    return null;
-                }
-                else {
-                    if (quiz.validator != null) {
-                        if (quiz.validator.IsValid(name)) {
-                            quiz.answer = name;
-                            ResultOK = true;
-                        } else {
-                            System.out.println(quiz.validator.ErrorMessage());
-                        }
-
-                    } else {
-                        quiz.answer = name;
-                        ResultOK = true;
-                    }
-                }
-            }
-        }
-
-        for (quiz answer : questions) {
-            System.out.println(answer.answer);
-        }
-        Person Admin = new Person();
-        Admin.setName(questions.get(5).answer);
-        Admin.setPassportID(questions.get(6).answer);
-        Admin.setLocation(new Location(questions.get(7).answer));
-
-        return new StudyGroup(questions.get(0).answer,
-                new Coordinates(questions.get(1).answer),
-                Integer.parseInt(questions.get(2).answer),
-                FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)],
-                Semester.values()[Integer.parseInt(questions.get(4).answer)],
-                Admin);
-
-    }
-
-    public StudyGroup addFromFile(String CommandArgs) {
-
-        boolean ImportantQuestionMistake = false;
-        for(quiz Question : questions) {
-            Pattern p = Pattern.compile("-" + Question.ScriptName + "(.+?)( -|$)");
-            Matcher m = p.matcher(CommandArgs);
-            if (m.find()) {
-
-                if (Question.validator != null) {
-                    String FoundAnswer = m.group(1).trim();
-                    if (Question.validator.IsValid(FoundAnswer)) {
-                        Question.answer = FoundAnswer;
+                    if (name.equals("exitcmd")) {
+                        System.out.println("Выходим из команды ввода, пекарь");
+                        return "";
                     }
                     else {
-                        if(Question.Important) {
-
-                            ImportantQuestionMistake = true;
-
-                        }
+                        ResultOK = acceptAnswer(quiz, name);
+                        if (!ResultOK)
+                            System.out.println(quiz.validator.errorMessage());
                     }
+                }
+            }
+        }
+
+        printQuizAnswers();
+
+        return assignQuizAnswers(studyGroup);
+    }
+
+    public static String edit(StudyGroup studyGroup) {
+        return fillGroupFromSysIn(studyGroup, "N");
+    }
+
+    private static boolean fillGroupFromFile(StudyGroup studyGroup, String commandArgs, boolean importantQuestions) {
+
+        nullQuizAnswers();
+        boolean importantQuestionMistake = false;
+        for(Quiz quiz : questions) {
+            Pattern p = Pattern.compile("-" + quiz.scriptName + "(.+?)( -|$)");
+            Matcher m = p.matcher(commandArgs);
+            if (m.find()) {
+                String foundAnswer = m.group(1).trim();
+                if (!acceptAnswer(quiz, foundAnswer) && quiz.important) {
+                    importantQuestionMistake = true;
                 }
             }
             else {
-                if(Question.Important) {
-                    ImportantQuestionMistake = true;
+                if(quiz.important) {
+                    importantQuestionMistake = true;
                 }
             }
         }
-        if (ImportantQuestionMistake) {
+        if (importantQuestionMistake && importantQuestions) {
             System.out.println("Не получен(Ы) ответы на важные вопросы, идите лесом");
         }
-        for (quiz answer : questions) {
-            System.out.println(answer.answer);
-        }
-        Person Admin = new Person();
-        Admin.setName(questions.get(5).answer);
-        FormOfEducation f = null;
-        if (questions.get(6).answer != null) {
-            Admin.setPassportID(questions.get(6).answer) ;
-        }
-        if (questions.get(7).answer != null) {
-            Admin.setLocation(new Location(questions.get(7).answer));
-        }
-        if (questions.get(3).answer != null) {
-            f = FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)];
-        }
 
-        return new StudyGroup(questions.get(0).answer,
-                new Coordinates(questions.get(1).answer),
-                Integer.parseInt(questions.get(2).answer),
-                f,
-                Semester.values()[Integer.parseInt(questions.get(4).answer)],
-                Admin);
+        printQuizAnswers();
+
+        assignQuizAnswers(studyGroup);
+        return true;
+    }
+
+    public static void editFromFile(StudyGroup studyGroup, String commandArgs) {
+        fillGroupFromFile(studyGroup, commandArgs, false);
+    }
+
+    public static StudyGroup input() {
+
+        StudyGroup studyGroup = new StudyGroup();
+        if (fillGroupFromSysIn(studyGroup, null).equals(""))
+            return null;
+        return studyGroup;
+    }
+
+    public static StudyGroup inputFromFile(String commandArgs) {
+
+        StudyGroup studyGroup = new StudyGroup();
+        fillGroupFromFile(studyGroup, commandArgs, true);
+        return studyGroup;
     }
 }
  

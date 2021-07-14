@@ -1,6 +1,8 @@
 package collection_objects;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     public Location() {
         this.x = (double) 0;
         this.y = 0L;
@@ -12,6 +14,12 @@ public class Location {
         this.y = Long.parseLong(location.split(";")[1].trim());
         this.z = Float.parseFloat(location.split(";")[2].trim().replace(',', '.'));
 
+    }
+
+    public Location(Location other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
     }
 
     private Double x;
@@ -30,5 +38,15 @@ public class Location {
     public float getZ() {
 
         return z;
+    }
+
+    public static void main(String[] args) {
+        Location l1 = new Location();
+        Location l2 = new Location(l1);
+        l1.x = (double) 1;
+        l1.y = (long) 2;
+        l1.z = 3;
+        System.out.println(l2.x + " " + l2.y + " " + l2.z);
+
     }
 }

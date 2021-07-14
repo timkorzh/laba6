@@ -1,6 +1,8 @@
 package collection_objects;
 
-public enum Semester {
+import java.io.Serializable;
+
+public enum Semester implements Serializable {
     FIRST,
     THIRD,
     SIXTH,

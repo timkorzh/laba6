@@ -20,7 +20,7 @@ public class FilterBySemCommand extends AbstractCommand {
 
             if(CommandArgs == null) {
                 try {
-                    FBS = device.ReadFilterSem();
+                    FBS = device.readFilterSem();
                 } catch (InputMismatchException Ex) {
                     System.out.println("Введите число");
                     return;

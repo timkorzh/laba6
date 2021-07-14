@@ -1,14 +1,15 @@
 package collection_objects;
 
+import java.io.*;
 import java.time.LocalDateTime;
 
-public class StudyGroup {
+public class StudyGroup implements Serializable {
 
-
+//TODO: compareTo
     public StudyGroup() {
         creationDate = LocalDateTime.now();
-        GroupCounter += 1;
-        id = GroupCounter;
+        groupCounter += 1;
+        id = groupCounter;
         coordinates = new Coordinates();
         name="";
         this.groupAdmin = new Person();
@@ -22,7 +23,7 @@ public class StudyGroup {
         this.semesterEnum = semester;
         this.groupAdmin = admin;
         creationDate = LocalDateTime.now();
-        id = GroupCounter;
+        id = ++groupCounter;
     }
 
     public void setStudentsCount(Integer studentsCount) {
@@ -49,8 +50,15 @@ public class StudyGroup {
         return id;
     }
 
-    public static int GroupCounter;
+    private static int groupCounter;
 
+    public void updateId() {
+        id = ++groupCounter;
+    }
+
+    public static int getGroupCounter() {
+        return groupCounter;
+    }
 
 
     public FormOfEducation getFormOfEducation() {
@@ -98,16 +106,31 @@ public class StudyGroup {
         return coordinates;
     }
 
-
-    public static int getGroupCounter() {
-        return GroupCounter;
-    }
-
     public Integer getStudentsCount() {
         return studentsCount;
     }
 
 
     public void getCreationDate(String nodeValue) {
+        //TODO: попытаться убрать
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bout);
+        StudyGroup sg0 = new StudyGroup("group", new Coordinates(), 10, FormOfEducation.DISTANCE_EDUCATION, Semester.FIRST, new Person("name", "228", new Location()));
+        StudyGroup sg = new StudyGroup("group", new Coordinates(), 10, FormOfEducation.DISTANCE_EDUCATION, Semester.FIRST, new Person("name", "228", new Location()));
+        out.writeObject(sg);
+        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bout.toByteArray()));
+        StudyGroup sg2 = (StudyGroup) in.readObject();
+        System.out.println(sg2.id);
+        System.out.println(sg2.name);
+        System.out.println(sg2.studentsCount);
+        System.out.println(sg2.coordinates.getX() + " " + sg2.coordinates.getY());
+        System.out.println(sg2.creationDate);
+        System.out.println(sg2.formOfEducation);
+        System.out.println(sg2.groupAdmin.getName());
+        System.out.println(sg2.groupAdmin.getPassportID());
+        System.out.println(sg2.semesterEnum);
     }
 }

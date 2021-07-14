@@ -21,7 +21,7 @@ public class CountGreaterCommand extends AbstractCommand {
 
         if(CommandArgs == null) {
         try {
-            FOE = device.ReadFormOfEducation();
+            FOE = device.readFormOfEducation();
         } catch (InputMismatchException Ex) {
             System.out.println("Введите число");
             return;

@@ -21,7 +21,7 @@ public class RemoveLowerCommand extends AbstractCommand {
         int RBI;
         if(CommandArgs == null) {
             try {
-                RBI = device.RemoveById();
+                RBI = device.removeById();
             } catch (InputMismatchException Ex) {
                 System.out.println("Введите число");
                 return;
