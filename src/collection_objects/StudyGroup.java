@@ -114,23 +114,4 @@ public class StudyGroup implements Serializable {
     public void getCreationDate(String nodeValue) {
         //TODO: попытаться убрать
     }
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bout);
-        StudyGroup sg0 = new StudyGroup("group", new Coordinates(), 10, FormOfEducation.DISTANCE_EDUCATION, Semester.FIRST, new Person("name", "228", new Location()));
-        StudyGroup sg = new StudyGroup("group", new Coordinates(), 10, FormOfEducation.DISTANCE_EDUCATION, Semester.FIRST, new Person("name", "228", new Location()));
-        out.writeObject(sg);
-        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bout.toByteArray()));
-        StudyGroup sg2 = (StudyGroup) in.readObject();
-        System.out.println(sg2.id);
-        System.out.println(sg2.name);
-        System.out.println(sg2.studentsCount);
-        System.out.println(sg2.coordinates.getX() + " " + sg2.coordinates.getY());
-        System.out.println(sg2.creationDate);
-        System.out.println(sg2.formOfEducation);
-        System.out.println(sg2.groupAdmin.getName());
-        System.out.println(sg2.groupAdmin.getPassportID());
-        System.out.println(sg2.semesterEnum);
-    }
 }

@@ -8,10 +8,15 @@ public class Person implements Serializable {
         this.passportID = "";
         this.location = new Location();
     }
+
     public Person(String name, String passportID, Location location) {
         this.name = name;
         this.passportID = passportID;
         this.location = location;
+    }
+
+    public Person(String name) {
+        this.name = name;
     }
 
     private String name;

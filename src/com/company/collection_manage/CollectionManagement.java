@@ -57,7 +57,8 @@ public class CollectionManagement {
     }
 
     public void edit() {
-        InputDevice.edit(this);
+        //TODO
+        //InputDevice.edit();
     }
     public void edit(StudyGroup studyGroup, String CommandArgs) {
         InputDevice.editFromFile(studyGroup, CommandArgs);
