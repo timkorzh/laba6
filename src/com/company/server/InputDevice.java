@@ -366,17 +366,21 @@ public class InputDevice {
     }
 
     private static String fillGroupFromSysIn(StudyGroup studyGroup, String skipQuestionExpr) {
-
         ArrayList<Question.Answer> answers = initAnswers(quiz);
         Scanner scanner = new Scanner(System.in);
+        boolean groupAdminIsNull = studyGroup.getGroupAdmin() == null;
 
         for (int i = 0; i < answers.size(); i++) {
-
             Question.Answer answer = answers.get(i);
+            String scriptName = answer.getQuestion().scriptName;
+            if ((scriptName.equals(StudyGroupField.ADMIN_LOCATION.getScriptName()) ||
+                    scriptName.equals(StudyGroupField.ADMIN_PASSPORT.getScriptName())) &&
+                            groupAdminIsNull)
+                continue;
+
             boolean ResultOK = false;
             //до тех пор пока не ввел правильное
             while (!ResultOK) {
-
                 System.out.println("(" + (i + 1) + "/" + answers.size()+ ")" + quiz.get(i));
                 String name = scanner.nextLine();
                 //Проверяем надо ли что-то менять
@@ -395,6 +399,9 @@ public class InputDevice {
                     }
                 }
             }
+            if (answer.getQuestion().scriptName.equals(StudyGroupField.ADMIN_NAME.getScriptName()) && answer.answered) {
+                groupAdminIsNull = answer.value == null;
+            }
         }
 
         printQuizAnswers(answers);
@@ -403,11 +410,18 @@ public class InputDevice {
     }
 
     private static boolean fillGroupFromFile(StudyGroup studyGroup, String commandArgs, boolean importantQuestions) {
-
         ArrayList<Question.Answer> answers = initAnswers(quiz);
+        boolean groupAdminIsNull = studyGroup.getGroupAdmin() == null;
         boolean importantQuestionMistake = false;
+
         for(Question.Answer answer : answers) {
-            Pattern p = Pattern.compile("-" + answer.getQuestion().scriptName + "(.+?)( -|$)");
+            String scriptName = answer.getQuestion().scriptName;
+            if ((scriptName.equals(StudyGroupField.ADMIN_LOCATION.getScriptName()) ||
+                    scriptName.equals(StudyGroupField.ADMIN_PASSPORT.getScriptName())) &&
+                    groupAdminIsNull)
+                continue;
+
+            Pattern p = Pattern.compile("-" + answer.getQuestion().scriptName + "(.*?)( -|$)");
             Matcher m = p.matcher(commandArgs);
             if (m.find()) {
                 String foundAnswer = m.group(1).trim();
@@ -420,9 +434,14 @@ public class InputDevice {
                     importantQuestionMistake = true;
                 }
             }
+
+            if (answer.getQuestion().scriptName.equals(StudyGroupField.ADMIN_NAME.getScriptName()) && answer.answered) {
+                groupAdminIsNull = answer.value == null;
+            }
         }
         if (importantQuestionMistake && importantQuestions) {
             System.out.println("Не получен(Ы) ответы на важные вопросы, идите лесом");
+            return false;
         }
 
         printQuizAnswers(answers);
@@ -441,6 +460,7 @@ public class InputDevice {
 
     public static StudyGroup input() {
         StudyGroup studyGroup = new StudyGroup();
+        studyGroup.setGroupAdmin(null);
         if (fillGroupFromSysIn(studyGroup, null).equals(""))
             return null;
         return studyGroup;
@@ -448,8 +468,9 @@ public class InputDevice {
 
     public static StudyGroup inputFromFile(String commandArgs) {
         StudyGroup studyGroup = new StudyGroup();
-        fillGroupFromFile(studyGroup, commandArgs, true);
-        return studyGroup;
+        if (fillGroupFromFile(studyGroup, commandArgs, true))
+            return studyGroup;
+        return null;
     }
 
     public static void main(String[] args) {
