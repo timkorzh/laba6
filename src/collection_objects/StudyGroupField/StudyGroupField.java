@@ -3,6 +3,9 @@ package collection_objects.StudyGroupField;
 import collection_objects.Location;
 import collection_objects.StudyGroup;
 
+/**
+ * Перечисление объектов взаимодействия с конкретными полями Группы.
+ */
 public enum StudyGroupField {
     NAME("gName", (src, dst) -> dst.setName(src.getName())),
     COORDINATES("gCoords", (src, dst) -> {
@@ -34,8 +37,19 @@ public enum StudyGroupField {
         this.dataCopier = dataCopier;
     }
 
+    /**
+     * Возвращает ключ, относящийся к данному полю
+     * @return ключ, относящийся к данному полю
+     */
     public String getScriptName() { return scriptName; }
 
+    /**
+     * Возвращает соответствующий объект StudyGroupField по указанному ключу
+     * @param scriptName - ключ объекта
+     * @return - характеристика поля Группы (объект StudyGroupField)
+     * @throws IllegalArgumentException если указанный ключ не относится ни к одному из
+     * полей Группы.
+     */
     public static StudyGroupField getField(String scriptName)
                                           throws IllegalArgumentException {
         for (StudyGroupField field : StudyGroupField.values()) {
@@ -46,10 +60,22 @@ public enum StudyGroupField {
                 " не соответствует ни одному из полей StudyGroup");
     }
 
+    /**
+     * Копирует значение соответствующего поля одной Группы в это же поле второй Группы.
+     * @param srcGroup - Группа, значение поля которой будет скопировано.
+     * @param dstGroup - Группа, значение поля которой будет изменено.
+     */
     public void copyValue(StudyGroup srcGroup, StudyGroup dstGroup) {
         dataCopier.copyData(srcGroup, dstGroup);
     }
 
+    /**
+     * Копирует значение соответствующих полей одной Группы в эти же поля второй Группы по
+     * ключам поля.
+     * @param srcGroup - Группа, значения полей которой будут скопированы.
+     * @param dstGroup - Группа, значения полей которой будут изменены.
+     * @param scriptNames - ключи полей, который должны быть скопированы.
+     */
     public static void copyValue(StudyGroup srcGroup, StudyGroup dstGroup, String scriptNames) {
         for (String scriptName : scriptNames.split(" ")) {
             try {

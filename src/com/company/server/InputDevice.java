@@ -134,15 +134,24 @@ class AdminLocationValidator implements IValidator {
         return "Введите координаты в соответствии с форматом, уважаемый пекарь";
     }
 }
+
+/**
+ * Класс для чтения введённых объектов
+ */
 public class InputDevice {
     //TODO: переделать Person и StudyGroup, чтобы позволяли создание с нулевыми полями. Переделать валидаторы.
+    //TODO: убрать лишние методы. Перенести их в коллекшМанаджмент
+
+    /**
+     * Класс содержащий вопрос и дополнительные параметры вопроса. Неизменяемый класс.
+     */
     private static class Question {
 
-        final String question;
-        final IValidator validator;
-        final String scriptName;
-        final boolean important;
-        final boolean permitNulls;
+        final String question; // формулировка вопроса
+        final IValidator validator; // валидатор введённого значения
+        final String scriptName; // скрипт-ключ поля, к которому относится вопрос
+        final boolean important; // важность вопроса
+        final boolean permitNulls; // допустим ли null в качестве значения поля
 
         private Question(String question, IValidator validator, String scriptName, boolean important, boolean permitNulls) {
             this.question = question;
@@ -152,9 +161,13 @@ public class InputDevice {
             this.permitNulls = permitNulls;
         }
 
+        /**
+         * Ответ на конкретный вопрос. На один вопрос может ссылаться несколько ответов,
+         * но каждый ответ ссылается только на один вопрос.
+         */
         private class Answer {
             String value;
-            boolean answered;
+            boolean answered; // Был ли получен ответ
 
             Answer() { this.answered = false; }
 
@@ -163,10 +176,19 @@ public class InputDevice {
                 this.answered = true;
             }
 
+            /**
+             * Возвращает вопрос, к которому относится данный ответ
+             * @return вопрос, к которому относится данный ответ
+             */
             Question getQuestion() { return Question.this; }
         }
     }
 
+    /**
+     * Создает Лист неотвеченных ответов к каждому вопросу
+     * @param questions Лист вопросов для которых нужно создать ответы
+     * @return Лист с пустыми ответами
+     */
     private static ArrayList<Question.Answer> initAnswers(ArrayList<Question> questions) {
         ArrayList<Question.Answer> answers = new ArrayList<>(questions.size());
         for (Question question : questions) {
@@ -175,6 +197,9 @@ public class InputDevice {
         return answers;
     }
 
+    /**
+     * Лист вопросов
+     */
     private static ArrayList<Question> quiz = generateQuestions();
 
     private static ArrayList<Question> generateQuestions() {
@@ -208,7 +233,7 @@ public class InputDevice {
         RemoveById = scanner.nextInt();
         return RemoveById;
     }
-    public static enum RemoveMode {
+    public enum RemoveMode {
         High,
         Low,
         Equals
@@ -299,10 +324,22 @@ public class InputDevice {
         }
     }
 
+    /**
+     * Интерфейс для преобразования строки в значение поля и присвоения этого значения
+     * полю объекта. Для каждого поля создаётся своя реализация интерфейса.
+     */
     private interface StudyGroupFieldParser {
+        /**
+         * Преобразует строку в значение поля и присваивает это значения нужному полю объекта
+         * @param studyGroup Объект полю, которого необходимо присвоить значение
+         * @param value Значение в строковом представлении
+         */
         void parseValue(StudyGroup studyGroup, String value);
     }
 
+    /**
+     * Таблица парсеров для всех полей. Ключи -- скрипт-ключи полей, значения -- соответсвующие парсеры.
+     */
     private final static HashMap<String, StudyGroupFieldParser> fieldParsers = fillFieldParsers();
 
     private static HashMap<String, StudyGroupFieldParser> fillFieldParsers() {
@@ -333,12 +370,23 @@ public class InputDevice {
         return map;
     }
 
+    /**
+     * Выводит все ответы из списка
+     * @param answers список ответов, которые надо вывести
+     */
     private static void printQuizAnswers(ArrayList<Question.Answer> answers) {
         for (Question.Answer answer : answers) {
             System.out.println(answer.value);
         }
     }
 
+    /**
+     * Заполняет все поля объекта, для которых есть отвеченный ответ в списке
+     * @param studyGroup - объект, поля которого надо заполнить
+     * @param answers - список ответов
+     * @return строка состоящая из скрипт-ключей полей, заполненных в результате
+     * выполнения этого метода
+     */
     private static String assignQuizAnswers(StudyGroup studyGroup, ArrayList<Question.Answer> answers) {
         StringBuilder keysBuilder = new StringBuilder();
         for (Question.Answer answer : answers) {
@@ -351,6 +399,14 @@ public class InputDevice {
         return keysBuilder.toString().trim();
     }
 
+    /**
+     * Проверка строкового значения на валидаторе и запись его в ответ. Если значением
+     * является пустая строка и вопрос допускает null, то в ответ будет запиан null
+     * @param answer - ответ, в который нужно записать значение
+     * @param value - строковое значение, которое надо записать
+     * @return правда, если строковое значение прошло проверку и было записано. Ложь, если
+     * проверка не была пройдена
+     */
     private static boolean acceptAnswer(Question.Answer answer, String value) {
         IValidator validator = answer.getQuestion().validator;
         if (validator != null && !validator.isValid(value)) {
@@ -365,6 +421,14 @@ public class InputDevice {
         }
     }
 
+    /**
+     * Изменение полей Группы из стандартного потока ввода.
+     * @param studyGroup - Группа, значения полей которой надо изменить
+     * @param skipQuestionExpr - Выражение, при вводе которого поле не будет изменено. Если
+     *                         выражение null, то все поля должны обязательно заполняться.
+     * @return строка состоящая из скрипт-ключей полей, заполненных в результате
+     * выполнения этого метода
+     */
     private static String fillGroupFromSysIn(StudyGroup studyGroup, String skipQuestionExpr) {
         ArrayList<Question.Answer> answers = initAnswers(quiz);
         Scanner scanner = new Scanner(System.in);
@@ -373,6 +437,7 @@ public class InputDevice {
         for (int i = 0; i < answers.size(); i++) {
             Question.Answer answer = answers.get(i);
             String scriptName = answer.getQuestion().scriptName;
+            //Если нет админа группы, то пропускаем его поля
             if ((scriptName.equals(StudyGroupField.ADMIN_LOCATION.getScriptName()) ||
                     scriptName.equals(StudyGroupField.ADMIN_PASSPORT.getScriptName())) &&
                             groupAdminIsNull)
@@ -393,29 +458,50 @@ public class InputDevice {
                         return "";
                     }
                     else {
-                        ResultOK = acceptAnswer(answer, name);
+                        ResultOK = acceptAnswer(answer, name); //Проверка ответа на валидаторе и запись его в answer
                         if (!ResultOK)
                             System.out.println(answer.getQuestion().validator.errorMessage());
                     }
                 }
             }
             if (answer.getQuestion().scriptName.equals(StudyGroupField.ADMIN_NAME.getScriptName()) && answer.answered) {
-                groupAdminIsNull = answer.value == null;
+                groupAdminIsNull = answer.value == null; //Если только что было введено имя админа и его значение null, то админа нет
             }
         }
 
         printQuizAnswers(answers);
 
-        return assignQuizAnswers(studyGroup, answers);
+        return assignQuizAnswers(studyGroup, answers); //Заполняем значения полей Группы полученными ответами
     }
 
+    /**
+     * Изменение полей Группы из передаваемого строкового аргумента. Аргумент строится по
+     * шаблону: "-ключзначение -ключзначение" и т.д. Ключи определены в StudyGroupField.
+     * Нераспознанные ключи игнорируются.
+     * @param studyGroup - Группа, значения полей которой надо изменить
+     * @param commandArgs - строковый аргумент состоящий из ключей и значений, построенный
+     *                    по описанному выше шаблону
+     * @param importantQuestions - обязательно ли в строковом аргументе должны быть
+     *                           указаны важные поля. При инициализации новой группы
+     *                           устанавливается истина, при изменении полей уже
+     *                           существующей группы - ложь. Если установлена истина и
+     *                           среди значений аргумента нет значения поля, для которого
+     *                           Question.important == true, то все поля Группы останутся
+     *                           без изменений и метод вернёт false.
+     * @return результат выполнения метода. Если значения полей были изменены, результат -
+     * true. Если выполнение метода было прервано без изменения полей Группы, будет
+     * возвращено значение false.
+     */
     private static boolean fillGroupFromFile(StudyGroup studyGroup, String commandArgs, boolean importantQuestions) {
+        //TODO: убедиться, что во всех случаях, когда выполнение метода прерывается без
+        // изменения полей Группы, возвращается false.
         ArrayList<Question.Answer> answers = initAnswers(quiz);
         boolean groupAdminIsNull = studyGroup.getGroupAdmin() == null;
         boolean importantQuestionMistake = false;
 
         for(Question.Answer answer : answers) {
             String scriptName = answer.getQuestion().scriptName;
+            //Если нет админа группы, то пропускаем его поля
             if ((scriptName.equals(StudyGroupField.ADMIN_LOCATION.getScriptName()) ||
                     scriptName.equals(StudyGroupField.ADMIN_PASSPORT.getScriptName())) &&
                     groupAdminIsNull)
@@ -425,6 +511,7 @@ public class InputDevice {
             Matcher m = p.matcher(commandArgs);
             if (m.find()) {
                 String foundAnswer = m.group(1).trim();
+                //Проверка ответа на валидаторе и запись его в answer
                 if (!acceptAnswer(answer, foundAnswer) && answer.getQuestion().important) {
                     importantQuestionMistake = true;
                 }
@@ -436,7 +523,7 @@ public class InputDevice {
             }
 
             if (answer.getQuestion().scriptName.equals(StudyGroupField.ADMIN_NAME.getScriptName()) && answer.answered) {
-                groupAdminIsNull = answer.value == null;
+                groupAdminIsNull = answer.value == null; //Если только что было введено имя админа и его значение null, то админа нет
             }
         }
         if (importantQuestionMistake && importantQuestions) {
@@ -446,18 +533,38 @@ public class InputDevice {
 
         printQuizAnswers(answers);
 
-        assignQuizAnswers(studyGroup, answers);
+        assignQuizAnswers(studyGroup, answers); //Заполняем значения полей Группы полученными ответами
         return true;
     }
 
+    /**
+     * Изменение полей Группы из стандартного потока ввода. Чтобы оставить поле неизменным,
+     * на соответствующий вопрос вводится строка "N".
+     * @param studyGroup - Группа, значения полей которой надо изменить
+     * @return строка состоящая из скрипт-ключей полей, заполненных в результате
+     *      * выполнения этого метода
+     */
     public static String edit(StudyGroup studyGroup) {
         return fillGroupFromSysIn(studyGroup, "N");
     }
 
+    /**
+     * Изменение полей Группы из передаваемого строкового аргумента. Аргумент строится по
+     * шаблону: "-ключзначение -ключзначение" и т.д. Ключи определены в StudyGroupField.
+     * Нераспознанные ключи игнорируются.
+     * @param studyGroup - Группа, значения полей которой надо изменить
+     * @param commandArgs - строковый аргумент состоящий из ключей и значений, построенный
+     *                    по описанному выше шаблону
+     */
     public static void editFromFile(StudyGroup studyGroup, String commandArgs) {
         fillGroupFromFile(studyGroup, commandArgs, false);
     }
 
+    /**
+     * Задание новой Группы из стандартного потока ввода. Все поля должны быть заполнены.
+     * @return Группа с полями, считанными из стандартного потока ввода. Если ввод Группы
+     * был прерван будет возвращено значение null.
+     */
     public static StudyGroup input() {
         StudyGroup studyGroup = new StudyGroup();
         studyGroup.setGroupAdmin(null);
@@ -466,6 +573,17 @@ public class InputDevice {
         return studyGroup;
     }
 
+    /**
+     * Задание новой Группы из передаваемого строкового аргумента.
+     * Значения полей для которых Question.important == true должны быть указаны в
+     * аргументе. Аргумент строится по шаблону: "-ключзначение -ключзначение" и т.д.
+     * Ключи определены в StudyGroupField. Нераспознанные ключи игнорируются.
+     * @param commandArgs - строковый аргумент состоящий из ключей и значений, построенный
+     *                    по описанному выше шаблону
+     * @return Группа с полями, считанными из переданного строкового аргумента. Если в
+     * аргументе не указаны все необходимые поля, или группа не была проинициализирована
+     * по другой причине, возвращается значение null.
+     */
     public static StudyGroup inputFromFile(String commandArgs) {
         StudyGroup studyGroup = new StudyGroup();
         if (fillGroupFromFile(studyGroup, commandArgs, true))
