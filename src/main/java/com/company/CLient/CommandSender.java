@@ -42,6 +42,9 @@ public class ReplyReceiver {
                 }
                 s = datagramChannel.receive(f);
             }
+            if(s == null) {
+                return null;
+            }
             out.write(f.array());
             answer = out.toString().replaceAll("\00", "");
             f.clear();
@@ -49,9 +52,7 @@ public class ReplyReceiver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(s == null) {
-            return null;
-        }
+
         return new String(f.array());
     }
 }

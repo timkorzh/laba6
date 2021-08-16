@@ -1,6 +1,7 @@
 package com.company.commands;
 
 import com.company.server.CommandInvoker.CommandInvoker;
+import com.company.validation.CommandMethods;
 import com.company.validation.InputDevice;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,7 +20,8 @@ public class ExecuteCommand extends AbstractCommand {
         @Override
         public void execute(String CommandArgs) {
             boolean finished = false;
-            InputDevice device = new InputDevice();
+            //InputDevice device = new InputDevice();
+            CommandMethods device = new CommandMethods();
             Path REF = null;
             if (CommandArgs == null) {
                 System.out.println("Введите путь к файлу");

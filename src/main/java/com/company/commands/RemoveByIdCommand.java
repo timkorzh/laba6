@@ -1,6 +1,7 @@
 package com.company.commands;
 
 import com.company.collection_manage.CollectionManagement;
+import com.company.validation.CommandMethods;
 import com.company.validation.InputDevice;
 
 import java.util.InputMismatchException;
@@ -15,7 +16,8 @@ public class RemoveByIdCommand extends AbstractCommand {
 
     @Override
     public void execute(String CommandArgs) {
-        InputDevice device = new InputDevice();
+        //InputDevice device = new InputDevice();
+        CommandMethods device = new CommandMethods();
         int RBI;
         if(CommandArgs == null) {
             try {
@@ -37,7 +39,7 @@ public class RemoveByIdCommand extends AbstractCommand {
             }
         }
 
-        device.remove(collectionManagement, RBI, InputDevice.RemoveMode.Equals);
+        device.remove(collectionManagement, RBI, CommandMethods.RemoveMode.Equals);
     }
 
     @Override
