@@ -3,6 +3,7 @@ package com.company.CLient;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -37,10 +38,11 @@ public class ReplyReceiver {
             for (int i = 0; i < 10 && s == null; i++) {
                 try {
                     Thread.sleep(1000);
+                    s = datagramChannel.receive(f);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                s = datagramChannel.receive(f);
             }
             if(s == null) {
                 return null;
