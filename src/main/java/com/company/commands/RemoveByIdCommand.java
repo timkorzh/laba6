@@ -2,7 +2,7 @@ package com.company.commands;
 
 import com.company.collection_manage.CollectionManagement;
 import com.company.validation.CommandMethods;
-import com.company.validation.InputDevice;
+import com.company.server.InputDevice;
 
 import java.util.InputMismatchException;
 import java.util.regex.Matcher;

@@ -1,8 +1,8 @@
 package com.company.commands;
 
-import collection_objects.StudyGroup;
 import com.company.collection_manage.CollectionManagement;
-import com.company.validation.InputDevice;
+import com.company.collection_objects.StudyGroup;
+import com.company.server.InputDevice;
 
 public class AddCommand extends AbstractCommand {
     private final CollectionManagement collectionManagement;

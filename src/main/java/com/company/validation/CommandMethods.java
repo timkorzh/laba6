@@ -11,11 +11,11 @@ import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Stream;
-
+//TODO: !!!!! ВАЖНО: методы для чтения введённых данных и для выполнения команды не должны быть в одном классе !!!!!!!!
 public class CommandMethods {
 
 
-    public int RemoveById() throws InputMismatchException {
+    public int removeById() throws InputMismatchException {
         int RemoveById;
 
         Scanner scanner = new Scanner(System.in);
@@ -50,7 +50,7 @@ public class CommandMethods {
 
     }
 
-    public int ReadFormOfEducation() throws InputMismatchException {
+    public int readFormOfEducation() throws InputMismatchException {
         int FormEducation;
 
         Scanner scanner = new Scanner(System.in);
@@ -70,7 +70,7 @@ public class CommandMethods {
         }
     }
 
-    public Path ReadExecuteFilePath() {
+    public Path readExecuteFilePath() {
 
         Scanner scanner = new Scanner(System.in);
         String ExecuteFilePath = scanner.next();
@@ -84,7 +84,7 @@ public class CommandMethods {
 
 
     }
-    public int ReadFilterSem() {
+    public int readFilterSem() {
         int Sem;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());

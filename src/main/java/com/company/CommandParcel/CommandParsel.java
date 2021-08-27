@@ -1,4 +1,4 @@
-package CommandParcel;
+package com.company.CommandParcel;
 
 import java.io.*;
 

@@ -1,8 +1,8 @@
 package com.company.server;
 
-import collection_objects.*;
 import collection_objects.StudyGroupField.StudyGroupField;
 import com.company.collection_manage.*;
+import com.company.collection_objects.*;
 
 import java.io.File;
 import java.nio.file.Path;

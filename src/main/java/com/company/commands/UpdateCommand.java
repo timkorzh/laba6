@@ -2,7 +2,7 @@ package com.company.commands;
 
 import com.company.collection_objects.StudyGroup;
 import com.company.collection_manage.CollectionManagement;
-import com.company.validation.InputDevice;
+import com.company.server.InputDevice;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,7 +1,7 @@
 package collection_objects.StudyGroupField;
 
-import collection_objects.Location;
-import collection_objects.StudyGroup;
+import com.company.collection_objects.Location;
+import com.company.collection_objects.StudyGroup;
 
 /**
  * Перечисление объектов взаимодействия с конкретными полями Группы.

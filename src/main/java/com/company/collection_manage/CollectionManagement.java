@@ -1,6 +1,6 @@
 package com.company.collection_manage;
 
-import com.company.validation.InputDevice;
+import com.company.server.InputDevice;
 import com.company.collection_objects.*;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
