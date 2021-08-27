@@ -2,6 +2,7 @@ package com.company.collection_manage;
 
 import com.company.validation.InputDevice;
 import com.company.collection_objects.*;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 
@@ -9,9 +10,20 @@ import java.util.LinkedHashSet;
 public class CollectionManagement {
     private LinkedHashSet<StudyGroup> collection;
     public LocalDateTime CreationDate = LocalDateTime.now();
+    private PrintStream out;
+
+    public CollectionManagement(PrintStream printStream) {
+        this.collection = new LinkedHashSet<>();
+        out = printStream;
+    }
 
     public CollectionManagement() {
-        this.collection = new LinkedHashSet<>();
+        this(System.out);
+    }
+
+    public void setPrintStream(PrintStream printStream) {
+        //TODO: remove
+        this.out = printStream;
     }
 
     public LinkedHashSet<StudyGroup> getCollection() {
@@ -20,7 +32,7 @@ public class CollectionManagement {
 
     public void clear() {
         collection.clear();
-        System.out.println("Произошла очистка коллекции");
+        out.println("Произошла очистка коллекции");
     }
     public String info() {
         String Info;
@@ -35,7 +47,7 @@ public class CollectionManagement {
 
     public void show() {
         for (StudyGroup studyGroup : collection) {
-            System.out.println(
+            out.println(
                     "StudyGroup " + '\n' +
                             "id: " + studyGroup.getid() + '\n' +
                             "StudyCounter: " + studyGroup.getStudentsCount() + '\n' +
@@ -54,6 +66,10 @@ public class CollectionManagement {
 
     public void add(String CommandArgs) {
         collection.add(InputDevice.inputFromFile(CommandArgs));
+    }
+
+    public void add(StudyGroup group) {
+        collection.add(group);
     }
 
     public void edit() {

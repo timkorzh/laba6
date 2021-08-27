@@ -1,5 +1,6 @@
 package com.company.commands;
 
+import collection_objects.StudyGroup;
 import com.company.collection_manage.CollectionManagement;
 import com.company.validation.InputDevice;
 
@@ -9,16 +10,24 @@ public class AddCommand extends AbstractCommand {
     public AddCommand(CollectionManagement collectionManagement) {
         this.collectionManagement = collectionManagement;
     }
-    @Override
-    public void execute(String CommandArgs) {
 
-        if (CommandArgs == null) {
+    @Override
+    public void execute(String commandArgs) {
+
+        if (commandArgs == null) {
             collectionManagement.add();
         }
-       else {
-           collectionManagement.add(CommandArgs);
+        else {
+            collectionManagement.add(commandArgs);
         }
 
+    }
+
+    @Override
+    public void execute(String strArgs, Object commandArgs) {
+        if (commandArgs instanceof StudyGroup) {
+            collectionManagement.add((StudyGroup) commandArgs);
+        }
     }
 
     @Override

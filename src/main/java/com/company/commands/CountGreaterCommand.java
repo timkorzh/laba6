@@ -22,12 +22,12 @@ public class CountGreaterCommand extends AbstractCommand {
         int FOE;
 
         if(CommandArgs == null) {
-        try {
-            FOE = device.readFormOfEducation();
-        } catch (InputMismatchException Ex) {
-            System.out.println("Введите число");
-            return;
-        }
+            try {
+                FOE = device.readFormOfEducation();
+            } catch (InputMismatchException Ex) {
+                System.out.println("Введите число");
+                return;
+            }
         }
         else {
             Pattern p = Pattern.compile("-num (\\d+?)( -|$)");

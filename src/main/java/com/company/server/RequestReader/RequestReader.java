@@ -1,9 +1,11 @@
 package com.company.server.RequestReader;
 import com.company.collection_manage.CollectionManagement;
 import com.company.server.CommandInvoker.CommandInvoker;
+import com.company.server.Replier.Replier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.*;
 import java.util.Arrays;
 /**
@@ -11,29 +13,28 @@ import java.util.Arrays;
  */
 public class RequestReader {
     private final CommandInvoker commandInvoker;
-    private final CollectionManagement collectionManagement;
-    private final String filePath;
+    private final CollectionManagement collectionManagement; //TODO: remove
 
     public RequestReader(CollectionManagement collectionManagement, String filePath) {
         this.collectionManagement = collectionManagement;
-        this.commandInvoker = new CommandInvoker(this);
-        this.filePath = filePath;
+        this.commandInvoker = new CommandInvoker(collectionManagement);
+        commandInvoker.execute("load " + filePath);
     }
 
     public CommandInvoker getCommandInvoker() {
         return commandInvoker;
     }
-
+/*
     public CollectionManagement getCollectionManagement() {
         return collectionManagement;
     }
 
+    @Deprecated
     public void setCollectionManagement(CollectionManagement collectionManagement) {
         this.collectionManagement.getCollection().addAll(collectionManagement.getCollection());
     }
-
+*/
     public void start(int PORT) throws IOException {
-        commandInvoker.execute("load");
         System.out.println("Готов начать работу, уважаемый пекарь");
         byte[] b = new byte[10];
         SocketAddress a =
@@ -42,6 +43,8 @@ public class RequestReader {
                 new DatagramSocket(a);
         DatagramPacket i =
                 new DatagramPacket(b, b.length);
+        Replier replier = new Replier(s);
+        collectionManagement.setPrintStream(new PrintStream(replier));
 
         String command = "";
         while (true) {
@@ -61,10 +64,12 @@ public class RequestReader {
             }
             if(!command.equals("")) {
 
+                replier.setAddressPort(i.getAddress(), i.getPort());
                 commandInvoker.execute(command);
             }
         }
     }
-
+/*
     public String getFilePath() { return filePath; }
+    */
 }

@@ -1,7 +1,7 @@
 package com.company.server.CommandInvoker;
 
+import com.company.collection_manage.CollectionManagement;
 import com.company.commands.*;
-import com.company.server.RequestReader.RequestReader;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -9,30 +9,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Класс для выполнения команды
+ * Класс для вызова команды
  */
 public class CommandInvoker {
     private final HashMap<String, AbstractCommand> hashMap;
 
-    public CommandInvoker(RequestReader requestReader) {
+    public CommandInvoker(CollectionManagement collectionManagement) {
         this.hashMap = new HashMap<>();
-        History = new ArrayDeque<>(7);
-        ClientCommandReceiver clientCommandReceiver = new ClientCommandReceiver(requestReader);
-        register("help", new HelpCommand(clientCommandReceiver));
-        register("clear", new ClearCommand(requestReader.getCollectionManagement()));
-        register("show", new ShowCommand(requestReader.getCollectionManagement()));
-        register("save", new SaveCommand(clientCommandReceiver));
-        register("add", new AddCommand(requestReader.getCollectionManagement()));
-        register("history", new HistoryCommand(clientCommandReceiver.requestReader));
-        register("update", new UpdateCommand(requestReader.getCollectionManagement()));
-        register("min_by_students_count", new MinByStudentsCountCommand(requestReader.getCollectionManagement()));
-        register("remove_by_id", new RemoveByIdCommand(requestReader.getCollectionManagement()));
-        register("load", new LoadCommand(requestReader));
-        register("remove_lower", new RemoveLowerCommand(requestReader.getCollectionManagement()));
-        register("remove_higher", new RemoveHigherCommand(requestReader.getCollectionManagement()));
-        register("count_greater_than_form_of_education", new CountGreaterCommand(requestReader.getCollectionManagement()));
-        register("filter_by_semester_enum", new FilterBySemCommand(requestReader.getCollectionManagement()));
-        register("info", new InfoCommand(requestReader.getCollectionManagement()));
+        history = new ArrayDeque<>(7);
+        //ClientCommandReceiver clientCommandReceiver = new ClientCommandReceiver(collectionManagement);
+        FileCommands fileCommands = new FileCommands(collectionManagement);
+        register("help", new HelpCommand(this));
+        register("clear", new ClearCommand(collectionManagement));
+        register("show", new ShowCommand(collectionManagement));
+        register("save", fileCommands.getSaveCommand());
+        register("add", new AddCommand(collectionManagement));
+        register("history", new HistoryCommand(this));
+        register("update", new UpdateCommand(collectionManagement));
+        register("min_by_students_count", new MinByStudentsCountCommand(collectionManagement));
+        register("remove_by_id", new RemoveByIdCommand(collectionManagement));
+        register("load", fileCommands.getLoadCommand());
+        register("remove_lower", new RemoveLowerCommand(collectionManagement));
+        register("remove_higher", new RemoveHigherCommand(collectionManagement));
+        register("count_greater_than_form_of_education", new CountGreaterCommand(collectionManagement));
+        register("filter_by_semester_enum", new FilterBySemCommand(collectionManagement));
+        register("info", new InfoCommand(collectionManagement));
         register("execute_script", new ExecuteCommand(this));
     }
 
@@ -40,35 +41,38 @@ public class CommandInvoker {
         hashMap.put(commandName, command);
     }
 
-    public ArrayDeque<String> History;
-
+    public ArrayDeque<String> history;
 
     public HashMap<String, AbstractCommand> getHashMap() {
         return hashMap;
     }
 
-    public void execute(String InputString) {
-        String CommandName, CommandArgs;
-        CommandName = InputString.split("\\s")[0];
+    public void execute(String inputString) {
+        execute(inputString, null);
+    }
+
+    public void execute(String inputString, Object args) {
+        String commandName, commandArgs;
+        commandName = inputString.split("\\s")[0];
         Pattern p = Pattern.compile("\\s-.*");
-        Matcher m = p.matcher(InputString);
+        Matcher m = p.matcher(inputString);
         if (m.find()) {
 
-            CommandArgs = m.group(0);
+            commandArgs = m.group(0);
         } else {
-            CommandArgs = null;
+            commandArgs = null;
         }
 
         try {
-            hashMap.get(CommandName).execute(CommandArgs);
+            hashMap.get(commandName).execute(commandArgs, args);
 
-            History.push(CommandName);
-            if (History.size() > 7) {
-                History.removeLast();
+            history.push(commandName);
+            if (history.size() > 7) {
+                history.removeLast();
             }
 
         } catch (NullPointerException e) {
-            System.out.println("Пекарь, " + InputString + " - незарегистрированная команда. Похудей пальчики или напиши help.");
+            System.out.println("Пекарь, " + inputString + " - незарегистрированная команда. Похудей пальчики или напиши help.");
         }
     }
 
