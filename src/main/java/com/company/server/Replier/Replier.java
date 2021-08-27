@@ -48,9 +48,11 @@ public class Replier extends OutputStream {
 
     @Override
     public void flush() throws IOException {
+        bArrStream.write("\n".getBytes());
         DatagramPacket packet = new DatagramPacket(bArrStream.toByteArray(),
                 bArrStream.size(), address, port);
         socket.send(packet);
+        System.out.println(bArrStream.toString());//TODO: remove
         bArrStream.reset();
     }
 }

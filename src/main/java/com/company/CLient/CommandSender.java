@@ -22,35 +22,39 @@ public class CommandSender {
             datagramChannel.send(f, a);
         }
     }
+
 public class ReplyReceiver {
+
         public ReplyReceiver(DatagramChannel datagramChannel) {
             this.datagramChannel = datagramChannel;
         }
         private DatagramChannel datagramChannel;
 }
+
     public String receive() throws IOException {
         String answer = "";
-        ByteBuffer f = ByteBuffer.allocate(10);
+        ByteBuffer f = ByteBuffer.allocate(1000);
         SocketAddress s = datagramChannel.receive(f);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-        while(!answer.endsWith("\n")) {
-            for (int i = 0; i < 10 && s == null; i++) {
-                try {
-                    Thread.sleep(1000);
-                    s = datagramChannel.receive(f);
+            while(!answer.endsWith("\n")) {
+                for (int i = 0; i < 10 && s == null; i++) {
+                    try {
+                        Thread.sleep(1000);
+                        s = datagramChannel.receive(f);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                if(s == null) {
+                    System.out.println("no datagram was immediately available");
+                    return null;
+                }
+                out.write(f.array());
+                answer = out.toString().replaceAll("\00", "");
+                f.clear();
             }
-            if(s == null) {
-                return null;
-            }
-            out.write(f.array());
-            answer = out.toString().replaceAll("\00", "");
-            f.clear();
-        }
         } catch (IOException e) {
             e.printStackTrace();
         }

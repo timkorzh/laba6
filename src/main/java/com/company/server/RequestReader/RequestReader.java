@@ -66,6 +66,7 @@ public class RequestReader {
 
                 replier.setAddressPort(i.getAddress(), i.getPort());
                 commandInvoker.execute(command);
+                replier.flush();
             }
         }
     }

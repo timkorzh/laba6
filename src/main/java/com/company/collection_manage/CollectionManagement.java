@@ -32,7 +32,7 @@ public class CollectionManagement {
 
     public void clear() {
         collection.clear();
-        out.println("Произошла очистка коллекции");
+        out.println("Произошла очистка коллекции\n");
     }
     public String info() {
         String Info;
@@ -58,6 +58,7 @@ public class CollectionManagement {
                             "Form of education: " + studyGroup.getFormOfEducation() + '\n' +
                             "Semester: " + studyGroup.getSemesterEnum());
         }
+        out.println();
     }
 
     public void add() {

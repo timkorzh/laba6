@@ -41,7 +41,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        commandSender.send("show\n", socketAddress);
+        //commandSender.send("show\n", socketAddress);
         System.out.println("Готов начать работу, уважаемый пекарь");
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
