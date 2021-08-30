@@ -24,24 +24,30 @@ public class CommandSender {
     public void send(CommandParcel commandParcel, SocketAddress a) throws IOException {
         //TODO: реализацию можно вынести в специальный поток
         ByteBuffer bBuf;
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
-        objOut.writeObject(commandParcel);
-        //objOut.flush(); //TOdo: check if it is necessary
-        byte[] bArr = byteOut.toByteArray();
+        byte[] bArr;
+        try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+             ObjectOutputStream objOut = new ObjectOutputStream(byteOut)) {
+            objOut.writeObject(commandParcel);
+            //objOut.flush(); //TOdo: check if it is necessary
+            bArr = byteOut.toByteArray();
+        }
 
-        objOut.reset();
-        objOut.writeInt(bArr.length);
-        //objOut.flush();
-        bBuf = ByteBuffer.wrap(byteOut.toByteArray(), 0, byteOut.size());
+        try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+             ObjectOutputStream objOut = new ObjectOutputStream(byteOut)) {
+            objOut.writeObject(new Integer(bArr.length));
+            //objOut.flush();
+            bBuf = ByteBuffer.wrap(byteOut.toByteArray(), 0, byteOut.size());
+        }
 
         ///////////////////
         System.out.println(bBuf.array().length);
         for (byte b : bBuf.array()) {
             System.out.print(b + " ");
         }
+        System.out.println();
         /////////////////
 
+        test(bBuf);//todo: remove
         datagramChannel.send(bBuf, a);
 
         //TODO: определить размер пакетов
@@ -49,6 +55,15 @@ public class CommandSender {
             int length = Math.min(32757, bArr.length - i);
             bBuf = ByteBuffer.wrap(bArr, i, length);
             datagramChannel.send(bBuf, a);
+        }
+    }
+    //Todo: remove
+    private void test(ByteBuffer bBuf) {
+        byte[] data = bBuf.array();
+        try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data))) {
+            System.out.println((Integer) objIn.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

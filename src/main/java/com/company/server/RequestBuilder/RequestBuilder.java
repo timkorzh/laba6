@@ -36,7 +36,7 @@ public class RequestBuilder {
         if (bBuf == null) {
             byte[] data = packet.getData();
             try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data))) {
-                bBuf = ByteBuffer.allocate(objIn.readInt());
+                bBuf = ByteBuffer.allocate((Integer) objIn.readObject());
             }
             requestMap.put(socketAddress, bBuf);
         } else {
