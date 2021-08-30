@@ -43,8 +43,6 @@ public class RequestBuilder {
             bBuf.put(packet.getData(), 0, Math.min(packet.getLength(), bBuf.remaining()));
         }
 
-        System.out.println("appended");
-
         if (!bBuf.hasRemaining()) {
             //System.arraycopy(bBuf.array(), 0, buf, 0, bBuf.capacity());
             try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(bBuf.array()))) {

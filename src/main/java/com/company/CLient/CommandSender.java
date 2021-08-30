@@ -38,16 +38,6 @@ public class CommandSender {
             //objOut.flush();
             bBuf = ByteBuffer.wrap(byteOut.toByteArray(), 0, byteOut.size());
         }
-
-        ///////////////////
-        System.out.println(bBuf.array().length);
-        for (byte b : bBuf.array()) {
-            System.out.print(b + " ");
-        }
-        System.out.println();
-        /////////////////
-
-        test(bBuf);//todo: remove
         datagramChannel.send(bBuf, a);
 
         //TODO: определить размер пакетов
@@ -55,15 +45,6 @@ public class CommandSender {
             int length = Math.min(32757, bArr.length - i);
             bBuf = ByteBuffer.wrap(bArr, i, length);
             datagramChannel.send(bBuf, a);
-        }
-    }
-    //Todo: remove
-    private void test(ByteBuffer bBuf) {
-        byte[] data = bBuf.array();
-        try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data))) {
-            System.out.println((Integer) objIn.readObject());
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -76,12 +57,12 @@ public class ReplyReceiver {
 }
 
     public String receive() throws IOException {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         ByteBuffer f = ByteBuffer.allocate(1000);
         SocketAddress s = datagramChannel.receive(f);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            while(!answer.endsWith("\04")) {
+            while(!answer.toString().endsWith("\04")) {
                 for (int i = 0; i < 10 && s == null; i++) {
                     try {
                         Thread.sleep(1000);
@@ -96,13 +77,13 @@ public class ReplyReceiver {
                     return null;
                 }
                 out.write(f.array());
-                answer = out.toString().replaceAll("\00", "");
+                answer.append(out.toString().replaceAll("\00", ""));
                 f.clear();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new String(f.array());
+        return answer.deleteCharAt(answer.length() - 1).toString();
     }
 }

@@ -46,7 +46,7 @@ public class Replier extends OutputStream {
         DatagramPacket packet = new DatagramPacket(bArrStream.toByteArray(),
                 bArrStream.size(), socketAddress);
         socket.send(packet);
-        System.out.println(bArrStream.toString());//TODO: remove
+        System.out.println(bArrStream.toString().substring(0, bArrStream.toString().length() - 1));//TODO: remove
         bArrStream.reset();
     }
 }
