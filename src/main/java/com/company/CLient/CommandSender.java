@@ -1,9 +1,9 @@
 package com.company.CLient;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import com.company.CommandParcel.CommandParcel;
+
+import java.io.*;
 import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -14,17 +14,46 @@ public class CommandSender {
     private DatagramChannel datagramChannel;
 
     public void send(String command, SocketAddress a) throws IOException {
-        byte[] b = command.getBytes();
-        ByteBuffer f;
-        for(int i = 0; i < b.length; i += 10) {
-            int length = Math.min(10, b.length - i);
-            f = ByteBuffer.wrap(b, i, length);
-            datagramChannel.send(f, a);
+        send(new CommandParcel(command), a);
+    }
+
+    public void send(String command, Serializable args, SocketAddress a) throws IOException {
+        send(new CommandParcel(command, args), a);
+    }
+
+    public void send(CommandParcel commandParcel, SocketAddress a) throws IOException {
+        //TODO: реализацию можно вынести в специальный поток
+        ByteBuffer bBuf;
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
+        objOut.writeObject(commandParcel);
+        //objOut.flush(); //TOdo: check if it is necessary
+        byte[] bArr = byteOut.toByteArray();
+
+        objOut.reset();
+        objOut.writeInt(bArr.length);
+        //objOut.flush();
+        bBuf = ByteBuffer.wrap(byteOut.toByteArray(), 0, byteOut.size());
+
+        ///////////////////
+        System.out.println(bBuf.array().length);
+        for (byte b : bBuf.array()) {
+            System.out.print(b + " ");
+        }
+        /////////////////
+
+        datagramChannel.send(bBuf, a);
+
+        //TODO: определить размер пакетов
+        for(int i = 0; i < bArr.length; i += 32757) {
+            int length = Math.min(32757, bArr.length - i);
+            bBuf = ByteBuffer.wrap(bArr, i, length);
+            datagramChannel.send(bBuf, a);
         }
     }
 
 public class ReplyReceiver {
-
+//TODO: вынести в отдельный файл
         public ReplyReceiver(DatagramChannel datagramChannel) {
             this.datagramChannel = datagramChannel;
         }
@@ -37,7 +66,7 @@ public class ReplyReceiver {
         SocketAddress s = datagramChannel.receive(f);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            while(!answer.endsWith("\n")) {
+            while(!answer.endsWith("\04")) {
                 for (int i = 0; i < 10 && s == null; i++) {
                     try {
                         Thread.sleep(1000);

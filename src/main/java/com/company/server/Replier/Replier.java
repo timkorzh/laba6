@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 /**
  * Класс для управления ответами сервера
@@ -13,13 +14,11 @@ import java.net.InetAddress;
 public class Replier extends OutputStream {
     private ByteArrayOutputStream bArrStream;
     private DatagramSocket socket;
-    private InetAddress address;
-    private int port;
+    private InetSocketAddress socketAddress;
 
-    public Replier(DatagramSocket socket, InetAddress address, int port) {
+    public Replier(DatagramSocket socket, InetSocketAddress socketAddress) {
         this(socket);
-        this.address = address;
-        this.port = port;
+        this.socketAddress = socketAddress;
     }
 
     public Replier(DatagramSocket socket) {
@@ -27,13 +26,8 @@ public class Replier extends OutputStream {
         bArrStream = new ByteArrayOutputStream();
     }
 
-    public void setAddressPort(InetAddress address, int port) {
-        this.address = address;
-        setPort(port);
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public void setAddressPort(InetSocketAddress socketAddress) {
+        this.socketAddress = socketAddress;
     }
 
     @Override
@@ -48,9 +42,9 @@ public class Replier extends OutputStream {
 
     @Override
     public void flush() throws IOException {
-        bArrStream.write("\n".getBytes());
+        bArrStream.write("\04".getBytes());
         DatagramPacket packet = new DatagramPacket(bArrStream.toByteArray(),
-                bArrStream.size(), address, port);
+                bArrStream.size(), socketAddress);
         socket.send(packet);
         System.out.println(bArrStream.toString());//TODO: remove
         bArrStream.reset();

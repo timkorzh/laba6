@@ -64,7 +64,7 @@ public class RequestReader {
             }
             if(!command.equals("")) {
 
-                replier.setAddressPort(i.getAddress(), i.getPort());
+                replier.setAddressPort((InetSocketAddress) i.getSocketAddress());
                 commandInvoker.execute(command);
                 replier.flush();
             }
