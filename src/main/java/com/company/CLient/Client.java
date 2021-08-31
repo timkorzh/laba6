@@ -2,36 +2,25 @@ package com.company.CLient;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.PortUnreachableException;
-import java.net.SocketAddress;
-import java.nio.channels.DatagramChannel;
-import java.nio.channels.SelectableChannel;
 import java.util.Scanner;
 
 public class Client {
-    private DatagramChannel datagramChannel;
-    private final SocketAddress socketAddress;
     private final CommandSender commandSender;
-    public Client(SocketAddress a) throws IOException {
-        DatagramChannel d = (DatagramChannel)ConnectionSetter.getDatagramChannel(a).configureBlocking(false);
 
-        socketAddress = a;
-        commandSender = new CommandSender(d);
+    public Client(InetAddress addr, int port) throws IOException {
+        commandSender = new CommandSender(addr, port);
     }
+
     public static void main(String[] args) throws IOException {
-
-
-                SocketAddress a =
-                        new InetSocketAddress(InetAddress.getLocalHost(), 22);
-                Client client = new Client(a);
-                client.start();
-
+        Client client = new Client(InetAddress.getLocalHost(), 22);
+        client.start();
     }
+
     private boolean connectionCheck() throws IOException {
 
 
-                commandSender.send("connection_check\n", socketAddress);
+                commandSender.send("connection_check\n", this.commandSender.getSocketAddress());
                 String s = commandSender.receive();
                 if (s == null) {
                     return false;
@@ -41,7 +30,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        commandSender.send("show\n", socketAddress);
+        commandSender.send("show\n", this.commandSender.getSocketAddress());
         System.out.println("Готов начать работу, уважаемый пекарь");
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
@@ -51,7 +40,7 @@ public class Client {
 
             try {
 
-                    commandSender.send(line + "\n", socketAddress);
+                    commandSender.send(line + "\n", this.commandSender.getSocketAddress());
                     reply = commandSender.receive();
 
 

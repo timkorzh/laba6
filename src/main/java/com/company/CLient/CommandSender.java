@@ -2,15 +2,28 @@ package com.company.CLient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.SocketAddress;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
 public class CommandSender {
-    public CommandSender(DatagramChannel datagramChannel) {
-        this.datagramChannel = datagramChannel;
+    public CommandSender(InetAddress addr, int port) throws IOException {
+        this.socketAddress = new InetSocketAddress(addr, port);
+
+        this.datagramChannel = (DatagramChannel)ConnectionSetter.getDatagramChannel(this.socketAddress).configureBlocking(false);
+
+        this.datagramSocket = new DatagramSocket();
+        this.datagramSocket.setSoTimeout(10000);
     }
+
+    private SocketAddress socketAddress;
+    public SocketAddress getSocketAddress() {
+        return socketAddress;
+    }
+
     private DatagramChannel datagramChannel;
+
+    private DatagramSocket datagramSocket;
 
     public void send(String command, SocketAddress a) throws IOException {
         byte[] b = command.getBytes();
@@ -21,38 +34,25 @@ public class CommandSender {
             datagramChannel.send(f, a);
         }
     }
-public class ReplyReceiver {
-        public ReplyReceiver(DatagramChannel datagramChannel) {
-            this.datagramChannel = datagramChannel;
-        }
-        private DatagramChannel datagramChannel;
-}
-    public String receive() throws IOException {
-        String answer = "";
-        ByteBuffer f = ByteBuffer.allocate(10);
-        SocketAddress s = datagramChannel.receive(f);
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-        while(!answer.endsWith("\n")) {
-            for (int i = 0; i < 10 && s == null; i++) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                s = datagramChannel.receive(f);
-            }
-            if(s == null) {
-                return null;
-            }
-            out.write(f.array());
-            answer = out.toString().replaceAll("\00", "");
-            f.clear();
-        }
+    public String receive() {
+        byte[] buffer = new byte[1024];
+
+        DatagramPacket reply = new DatagramPacket(buffer, buffer.length, this.socketAddress);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            do {
+                this.datagramSocket.receive(reply);
+                out.write(buffer);
+            } while (buffer.length > 0);
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new String(f.array());
+        return out.toString();
     }
 }
