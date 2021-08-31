@@ -14,7 +14,8 @@ public class HelpCommand extends AbstractCommand {
     }
 
         @Override
-        public void execute(String CommandArgs) {
+        public String execute(String CommandArgs) {
         clientCommandReceiver.help();
+        return "";
     }
     }

@@ -8,8 +8,9 @@ public class HistoryCommand extends AbstractCommand {
     public HistoryCommand(RequestReader requestReader) {
         this.requestReader = requestReader;}
         @Override
-            public void execute(String CommandArgs) {
+            public String execute(String CommandArgs) {
             System.out.println("Последние команды:" + requestReader.getCommandInvoker().History.toString());
+            return "";
         }
 
         @Override

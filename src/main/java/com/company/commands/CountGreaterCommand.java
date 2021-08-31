@@ -16,7 +16,7 @@ public class CountGreaterCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(String CommandArgs) {
+    public String execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
         int FOE;
@@ -26,7 +26,8 @@ public class CountGreaterCommand extends AbstractCommand {
             FOE = device.ReadFormOfEducation();
         } catch (InputMismatchException Ex) {
             System.out.println("Введите число");
-            return;
+            return "Введите число";
+
         }
         }
         else {
@@ -37,11 +38,11 @@ public class CountGreaterCommand extends AbstractCommand {
             }
             else {
                 System.out.println("Ожидалось число");
-                return;
+                return "Ожидалось число";
             }
         }
         device.countFormOfEducation(collectionManagement, FOE);
-
+        return "";
     }
 
     @Override

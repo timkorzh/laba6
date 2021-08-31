@@ -11,7 +11,7 @@ public class AddCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
     }
     @Override
-    public void execute(String CommandArgs) {
+    public String execute(String CommandArgs) {
 
         if (CommandArgs == null) {
             collectionManagement.add();
@@ -19,7 +19,7 @@ public class AddCommand extends AbstractCommand {
        else {
            collectionManagement.add(CommandArgs);
         }
-
+        return "";
     }
 
     @Override

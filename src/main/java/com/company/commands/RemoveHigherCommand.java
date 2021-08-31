@@ -17,7 +17,7 @@ public class RemoveHigherCommand extends AbstractCommand {
 
 
     @Override
-    public void execute(String CommandArgs) {
+    public String execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
         int RBI;
@@ -26,7 +26,7 @@ public class RemoveHigherCommand extends AbstractCommand {
                 RBI = device.RemoveById();
             } catch (InputMismatchException Ex) {
                 System.out.println("Введите число");
-                return;
+                return "Введите число";
             }
         }
         else {
@@ -37,10 +37,11 @@ public class RemoveHigherCommand extends AbstractCommand {
             }
             else {
                 System.out.println("Ожидалось число");
-                return;
+                return "Ожидалось число";
             }
         }
         device.remove(collectionManagement, RBI, CommandMethods.RemoveMode.High);
+        return "";
     }
 
     @Override

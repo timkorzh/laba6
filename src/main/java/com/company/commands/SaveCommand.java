@@ -10,7 +10,10 @@ public class SaveCommand extends AbstractCommand {
         this.clientCommandReceiver = clientCommandReceiver;
     }
     @Override
-    public void execute(String CommandArgs) { clientCommandReceiver.save(); }
+    public String execute(String CommandArgs) {
+        clientCommandReceiver.save();
+        return "";
+    }
 
         @Override
         public String describe () {
