@@ -13,7 +13,7 @@ public class ShowCommand extends AbstractCommand {
     }
 
     @Override
-    public String execute(String CommandArgs) {
+    public void execute(String CommandArgs) {
         collectionManagement.show();
         for (StudyGroup studyGroup : collection) {
             System.out.println(
@@ -27,7 +27,8 @@ public class ShowCommand extends AbstractCommand {
                             "Form of education: " + studyGroup.getFormOfEducation() + '\n' +
                             "Semester: " + studyGroup.getSemesterEnum());
         }
-        return "";
+        return;
+        //return "";
     }
 
     @Override

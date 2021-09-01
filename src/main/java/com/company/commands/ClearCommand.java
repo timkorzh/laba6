@@ -14,8 +14,9 @@ public class ClearCommand extends AbstractCommand{
     }
 
     @Override
-    public String execute(String CommandArgs) {
+    public void execute(String CommandArgs) {
         collectionManagement.clear();
-        return "";
+        return;
+        //return "";
     }
 }

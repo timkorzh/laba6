@@ -15,7 +15,7 @@ public class FilterBySemCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
         }
         @Override
-        public String execute(String CommandArgs) {
+        public void execute(String CommandArgs) {
             //InputDevice device = new InputDevice();
             CommandMethods device = new CommandMethods();
             int FBS;
@@ -25,7 +25,8 @@ public class FilterBySemCommand extends AbstractCommand {
                     FBS = device.readFilterSem();
                 } catch (InputMismatchException Ex) {
                     System.out.println("Введите число");
-                    return "Введите число";
+                    return;
+                    //return "Введите число";
                 }
             }
             else {
@@ -36,11 +37,13 @@ public class FilterBySemCommand extends AbstractCommand {
                 }
                 else {
                     System.out.println("Ожидалось число");
-                    return "Ожидалось число";
+                    return;
+                    //return "Ожидалось число";
                     }
             }
         device.filterBySem(collectionManagement, FBS);
-        return "";
+            return;
+            //return "";
     }
 
         @Override

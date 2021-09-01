@@ -71,7 +71,7 @@ public class ReplyReceiver {
 
     public String receive() throws IOException {
         StringBuilder answer = new StringBuilder();
-        ByteBuffer f = ByteBuffer.allocate(1000);
+        ByteBuffer f = ByteBuffer.allocate(32757);
         SocketAddress s = datagramChannel.receive(f);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {

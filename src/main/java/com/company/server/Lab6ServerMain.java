@@ -31,7 +31,7 @@ public class Lab6ServerMain {
         }
         ConnectionManager connectionManager = new ConnectionManager(port);
         CommandInvoker commandInvoker = new CommandInvoker(new CollectionManagement(new PrintStream(connectionManager.getReplier())));
-        commandInvoker.execute("load " + fileName);
+        commandInvoker.execute("load -" + fileName);
         System.out.println("Готов начать работу, уважаемый пекарь");
         connectionManager.start(commandInvoker);
     }

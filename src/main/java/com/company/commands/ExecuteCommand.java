@@ -18,7 +18,7 @@ public class ExecuteCommand extends AbstractCommand {
     }
 
         @Override
-        public String execute(String CommandArgs) {
+        public void execute(String CommandArgs) {
             boolean finished = false;
             String result = "";
             //InputDevice device = new InputDevice();
@@ -64,7 +64,8 @@ public class ExecuteCommand extends AbstractCommand {
             } else {
                 System.out.println(result);
             }
-            return result;
+            return;
+            //return result;
         }
 
         @Override

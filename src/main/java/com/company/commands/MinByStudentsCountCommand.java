@@ -12,7 +12,7 @@ public class MinByStudentsCountCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
     }
     @Override
-    public String execute(String CommandArgs) {
+    public void execute(String CommandArgs) {
 
         if(collectionManagement.getCollection().size() != 0 && collectionManagement.getCollection() != null) {
 
@@ -23,7 +23,8 @@ public class MinByStudentsCountCommand extends AbstractCommand {
         else {
             System.out.println("Не могу найти группу с минимальным количсетвом студентов, так как групп нет. Мне очень жаль(");
         }
-        return "";
+        return;
+        //return "";
     }
     @Override
     public String describe() {

@@ -31,7 +31,7 @@ public class FileCommands {
 
         @Override
         public void execute(String CommandArgs) {
-            if (filePath != null && filePath.matches("[/\\\\]dev.*")) {
+            if (filePath != null && !filePath.matches("[/\\\\]dev.*")) {
                 XMLParser xmlParser = new XMLParser(filePath);
                 xmlParser.saveCollection(collectionManagement);
             }//TODO: стоит сообщать, если ничего не произошло
@@ -53,12 +53,12 @@ public class FileCommands {
         @Override
         public void execute(String filePath) {
             if(filePath != null) {
-                if (filePath.matches("[/\\\\]dev.*"))
+                if (!filePath.matches("[/\\\\]dev.*"))
                     FileCommands.this.filePath = filePath;
                 else return; //TODO: Ok?
             }
 
-            if(FileCommands.this.filePath != null && FileCommands.this.filePath.matches("[/\\\\]dev.*")) {
+            if(FileCommands.this.filePath != null && !FileCommands.this.filePath.matches("[/\\\\]dev.*")) {
                 XMLParser parser = new XMLParser(FileCommands.this.filePath);
                 collectionManagement.getCollection().addAll(parser.deParseCollection().getCollection());
                 //requestReader.setCollectionManagement(parser.deParseCollection()); //TODO: clean
