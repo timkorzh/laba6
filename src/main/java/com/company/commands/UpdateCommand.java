@@ -15,7 +15,7 @@ public class UpdateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(String CommandArgs) {
+    public String execute(String CommandArgs) {
         if (CommandArgs != null) {
             Pattern p = Pattern.compile("-id (\\d+?)( -|$)");
             Matcher m = p.matcher(CommandArgs);
@@ -25,17 +25,18 @@ public class UpdateCommand extends AbstractCommand {
                     InputDevice.editFromFile(((StudyGroup) collectionManagement.getCollection().stream().filter(n -> GroupId == n.getId()).toArray()[0]), CommandArgs);
                 } else {
                     System.out.println("Ничего не нашёл по этому номеру((");
-                    return;
+                    return "Ничего не нашёл по этому номеру((";
                 }
             }
             else {
                 System.out.println("Параметр id не найден");
-                return;
+                return "Параметр id не найден";
             }
         }
         else {
             collectionManagement.edit();
         }
+        return "";
     }
 
     @Override

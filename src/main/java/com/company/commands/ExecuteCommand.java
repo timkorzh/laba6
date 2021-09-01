@@ -18,8 +18,9 @@ public class ExecuteCommand extends AbstractCommand {
     }
 
         @Override
-        public void execute(String CommandArgs) {
+        public String execute(String CommandArgs) {
             boolean finished = false;
+            String result = "";
             //InputDevice device = new InputDevice();
             CommandMethods device = new CommandMethods();
             Path REF = null;
@@ -27,7 +28,7 @@ public class ExecuteCommand extends AbstractCommand {
                 System.out.println("Введите путь к файлу");
                 REF = device.readExecuteFilePath();
                 if(REF.toString().matches("[/\\\\]dev.*")) {
-                    System.out.println("Не могу исполнить данный файл");
+                    result = "Не могу исполнить данный файл";
                     finished=true;
                 }
             } else {
@@ -40,12 +41,12 @@ public class ExecuteCommand extends AbstractCommand {
                     Pattern b = Pattern.compile("[/\\\\]dev.*");
                     Matcher n = b.matcher(m.group(1));
                     if (n.find()) {
-                        System.out.println("Не могу исполнить данный файл");
+                        result = "Не могу исполнить данный файл";
                         finished=true;
                     }
                 }
                 else {
-                    System.out.println("Ожидался путь к файлу");
+                    result = "Ожидался путь к файлу";
                     finished = true;
                 }
             }
@@ -60,7 +61,10 @@ public class ExecuteCommand extends AbstractCommand {
                 catch (IOException e) {
                     System.out.println("Мне жаль, что так вышло((((");
                 }
+            } else {
+                System.out.println(result);
             }
+            return result;
         }
 
         @Override

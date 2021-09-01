@@ -1,17 +1,30 @@
 package com.company.CLient;
 
-import com.company.CommandParcel.CommandParcel;
-
 import java.io.*;
-import java.net.SocketAddress;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import com.company.CommandParcel.CommandParcel;
 
 public class CommandSender {
-    public CommandSender(DatagramChannel datagramChannel) {
-        this.datagramChannel = datagramChannel;
+    public CommandSender(InetAddress addr, int port) throws IOException {
+        this.socketAddress = new InetSocketAddress(addr, port);
+
+        this.datagramChannel = (DatagramChannel)ConnectionSetter.getDatagramChannel(this.socketAddress).configureBlocking(false);
+
+        this.datagramSocket = new DatagramSocket();
+        this.datagramSocket.setSoTimeout(10000);
     }
+
+    private SocketAddress socketAddress;
+    public SocketAddress getSocketAddress() {
+        return socketAddress;
+    }
+
     private DatagramChannel datagramChannel;
+
+    private DatagramSocket datagramSocket;
+//TODO: Убрать параметр SocketAddress
 
     public void send(String command, SocketAddress a) throws IOException {
         send(new CommandParcel(command), a);
