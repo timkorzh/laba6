@@ -1,8 +1,8 @@
 package com.company.server;
 
 import collection_objects.StudyGroupField.StudyGroupField;
-import com.company.collection_manage.*;
-import com.company.collection_objects.*;
+import com.company.server.collection_manage.*;
+import com.company.common.collection_objects.*;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -139,7 +139,6 @@ class AdminLocationValidator implements IValidator {
  * Класс для чтения введённых объектов
  */
 public class InputDevice {
-    //TODO: переделать Person и StudyGroup, чтобы позволяли создание с нулевыми полями. Переделать валидаторы.
     //TODO: убрать лишние методы. Перенести их в коллекшМанаджмент
 
     /**

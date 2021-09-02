@@ -1,9 +1,5 @@
 package com.company.server.CommandInvoker;
-import com.company.commands.AbstractCommand;
-import com.company.parsers.XMLParser;
 import com.company.server.RequestReader.RequestReader;
-
-import java.util.HashMap;
 
 @Deprecated
 public class ClientCommandReceiver {

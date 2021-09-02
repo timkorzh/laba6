@@ -1,5 +1,5 @@
 package com.company.server.RequestReader;
-import com.company.collection_manage.CollectionManagement;
+import com.company.server.collection_manage.CollectionManagement;
 import com.company.server.CommandInvoker.CommandInvoker;
 import com.company.server.Replier.Replier;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class RequestReader {
     private final CommandInvoker commandInvoker;
-    private final CollectionManagement collectionManagement; //TODO: remove
+    private final CollectionManagement collectionManagement;
 
     public RequestReader(CollectionManagement collectionManagement, String filePath) {
         this.collectionManagement = collectionManagement;

@@ -28,7 +28,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.company.Main</mainClass>
+                            <mainClass>com.company.server.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

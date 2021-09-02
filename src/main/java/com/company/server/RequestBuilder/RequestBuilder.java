@@ -1,6 +1,6 @@
 package com.company.server.RequestBuilder;
 
-import com.company.CommandParcel.CommandParcel;
+import com.company.common.CommandParcel.CommandParcel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,7 +26,6 @@ public class RequestBuilder {
        // objIn = new ObjectInputStream(bArrIn);
     }
 
-    //todo: можно реализовать на потоках
     public CommandParcel append(DatagramPacket packet) throws IOException, ClassNotFoundException {
         //System.arraycopy(packet.getData(), 0, buf, 0,
           //                   packet.getData().length);

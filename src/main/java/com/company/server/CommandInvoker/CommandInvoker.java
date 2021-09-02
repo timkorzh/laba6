@@ -1,7 +1,7 @@
 package com.company.server.CommandInvoker;
 
-import com.company.collection_manage.CollectionManagement;
-import com.company.commands.*;
+import com.company.server.collection_manage.CollectionManagement;
+import com.company.common.commands.*;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;

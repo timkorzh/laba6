@@ -1,6 +1,6 @@
 package com.company.server;
 
-import com.company.collection_manage.CollectionManagement;
+import com.company.server.collection_manage.CollectionManagement;
 import com.company.server.CommandInvoker.CommandInvoker;
 import com.company.server.ConnectionManager.ConnectionManager;
 

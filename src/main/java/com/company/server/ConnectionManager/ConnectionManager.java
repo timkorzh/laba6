@@ -1,6 +1,6 @@
 package com.company.server.ConnectionManager;
 
-import com.company.CommandParcel.CommandParcel;
+import com.company.common.CommandParcel.CommandParcel;
 import com.company.server.CommandInvoker.CommandInvoker;
 import com.company.server.Replier.Replier;
 import com.company.server.RequestBuilder.RequestBuilder;
@@ -24,7 +24,7 @@ public class ConnectionManager {
         socket = new DatagramSocket(a);
         packet = new DatagramPacket(b, b.length);
         replier = new Replier(socket);
-        //requestReader = new RequestReader(new CollectionManagement(), "f"); //TODO: change args
+        //requestReader = new RequestReader(new CollectionManagement(), "f"); //TODO: change args or delete RequestReader
     }
 
     public RequestBuilder getRequestBuilder() { return requestBuilder; }
