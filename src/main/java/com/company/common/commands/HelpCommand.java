@@ -1,7 +1,7 @@
 package com.company.common.commands;
 
-//import com.company.server.CommandInvoker.ClientCommandReceiver;
-import com.company.server.CommandInvoker.CommandInvoker;
+//import com.company.server.recognition.ClientCommandReceiver;
+import com.company.server.recognition.CommandInvoker;
 
 import java.util.HashMap;
 

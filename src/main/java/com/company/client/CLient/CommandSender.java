@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import com.company.common.CommandParcel.CommandParcel;
+import com.company.common.cmdparcel.CommandParcel;
 
 public class CommandSender {
     public CommandSender(InetAddress addr, int port) throws IOException {

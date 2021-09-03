@@ -1,7 +1,7 @@
 package com.company.client.validation;
 
 import com.company.common.collection_objects.*;
-import com.company.server.collection_manage.*;
+import com.company.server.processing.collection_manage.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

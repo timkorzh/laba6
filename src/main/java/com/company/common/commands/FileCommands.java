@@ -1,7 +1,7 @@
 package com.company.common.commands;
 
-import com.company.server.collection_manage.CollectionManagement;
-import com.company.server.parsers.XMLParser;
+import com.company.server.processing.collection_manage.CollectionManagement;
+import com.company.server.processing.parsers.XMLParser;
 
 public class FileCommands {
     private String filePath;

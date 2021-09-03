@@ -1,6 +1,6 @@
 package com.company.common.commands;
 
-import com.company.server.collection_manage.CollectionManagement;
+import com.company.server.processing.collection_manage.CollectionManagement;
 
 public class InfoCommand extends AbstractCommand {
     CollectionManagement collectionManagement;

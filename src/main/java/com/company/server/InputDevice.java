@@ -1,7 +1,7 @@
 package com.company.server;
 
 import collection_objects.StudyGroupField.StudyGroupField;
-import com.company.server.collection_manage.*;
+import com.company.server.processing.collection_manage.*;
 import com.company.common.collection_objects.*;
 
 import java.io.File;
@@ -138,6 +138,7 @@ class AdminLocationValidator implements IValidator {
 /**
  * Класс для чтения введённых объектов
  */
+@Deprecated
 public class InputDevice {
     //TODO: убрать лишние методы. Перенести их в коллекшМанаджмент
 

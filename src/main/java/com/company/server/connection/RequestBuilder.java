@@ -1,6 +1,6 @@
-package com.company.server.RequestBuilder;
+package com.company.server.connection;
 
-import com.company.common.CommandParcel.CommandParcel;
+import com.company.common.cmdparcel.CommandParcel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

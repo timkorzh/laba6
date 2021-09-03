@@ -1,4 +1,4 @@
-package com.company.server.CommandInvoker;
+package com.company.server.recognition;
 import com.company.server.RequestReader.RequestReader;
 
 @Deprecated

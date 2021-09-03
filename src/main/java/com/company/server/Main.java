@@ -1,7 +1,7 @@
 package com.company.server;
 
 
-import com.company.server.collection_manage.CollectionManagement;
+import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.server.RequestReader.RequestReader;
 
 import java.io.IOException;

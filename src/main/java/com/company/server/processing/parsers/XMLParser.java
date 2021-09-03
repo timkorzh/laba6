@@ -1,7 +1,7 @@
-package com.company.server.parsers;
+package com.company.server.processing.parsers;
 
 import com.company.common.collection_objects.*;
-import com.company.server.collection_manage.*;
+import com.company.server.processing.collection_manage.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

@@ -1,6 +1,6 @@
 package com.company.common.commands;
 
-import com.company.server.CommandInvoker.CommandInvoker;
+import com.company.server.recognition.CommandInvoker;
 
 public class HistoryCommand extends AbstractCommand {
     CommandInvoker commandInvoker;

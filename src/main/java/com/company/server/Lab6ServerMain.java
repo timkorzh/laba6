@@ -1,8 +1,8 @@
 package com.company.server;
 
-import com.company.server.collection_manage.CollectionManagement;
-import com.company.server.CommandInvoker.CommandInvoker;
-import com.company.server.ConnectionManager.ConnectionManager;
+import com.company.server.processing.collection_manage.CollectionManagement;
+import com.company.server.recognition.CommandInvoker;
+import com.company.server.connection.ConnectionManager;
 
 import java.io.IOException;
 import java.io.PrintStream;

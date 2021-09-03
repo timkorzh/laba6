@@ -1,4 +1,4 @@
-package com.company.server.collection_manage;
+package com.company.server.processing.collection_manage;
 
 import com.company.server.InputDevice;
 import com.company.common.collection_objects.*;

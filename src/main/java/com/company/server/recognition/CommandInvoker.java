@@ -1,6 +1,6 @@
-package com.company.server.CommandInvoker;
+package com.company.server.recognition;
 
-import com.company.server.collection_manage.CollectionManagement;
+import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.common.commands.*;
 
 import java.util.ArrayDeque;

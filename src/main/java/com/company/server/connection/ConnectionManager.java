@@ -1,9 +1,8 @@
-package com.company.server.ConnectionManager;
+package com.company.server.connection;
 
-import com.company.common.CommandParcel.CommandParcel;
-import com.company.server.CommandInvoker.CommandInvoker;
-import com.company.server.Replier.Replier;
-import com.company.server.RequestBuilder.RequestBuilder;
+import com.company.common.cmdparcel.CommandParcel;
+import com.company.server.recognition.CommandInvoker;
+import com.company.server.response.Replier;
 
 import java.io.IOException;
 import java.net.*;

@@ -1,12 +1,12 @@
-package com.company.server.Replier;
+package com.company.server.response;
 
 import java.io.*;
-import java.net.InetAddress;
 
 /**
  * Класс для отправки сообщений на клиент
  */
 //TODO: ?
+@Deprecated
 public class ServerOutputStream extends OutputStream {
     Replier replier;
     byte[] buf;

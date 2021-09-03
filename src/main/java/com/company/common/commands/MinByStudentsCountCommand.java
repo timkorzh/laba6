@@ -1,7 +1,7 @@
 package com.company.common.commands;
 
 import com.company.common.collection_objects.StudyGroup;
-import com.company.server.collection_manage.CollectionManagement;
+import com.company.server.processing.collection_manage.CollectionManagement;
 
 import java.util.Comparator;
 import java.util.Optional;

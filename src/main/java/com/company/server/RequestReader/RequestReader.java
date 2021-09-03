@@ -1,7 +1,7 @@
 package com.company.server.RequestReader;
-import com.company.server.collection_manage.CollectionManagement;
-import com.company.server.CommandInvoker.CommandInvoker;
-import com.company.server.Replier.Replier;
+import com.company.server.processing.collection_manage.CollectionManagement;
+import com.company.server.recognition.CommandInvoker;
+import com.company.server.response.Replier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.util.Arrays;
 /**
  * Класс для распознавния команды
  */
+@Deprecated
 public class RequestReader {
     private final CommandInvoker commandInvoker;
     private final CollectionManagement collectionManagement;
