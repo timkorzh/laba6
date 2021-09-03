@@ -1,5 +1,6 @@
 package com.company.common.commands;
 
+import com.company.client.validation.CommandMethodsExecute;
 import com.company.server.collection_manage.CollectionManagement;
 import com.company.client.validation.CommandMethods;
 
@@ -17,6 +18,7 @@ public class RemoveByIdCommand extends AbstractCommand {
     public void execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
+        CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
         int RBI;
         if(CommandArgs == null) {
             try {
@@ -40,7 +42,7 @@ public class RemoveByIdCommand extends AbstractCommand {
             }
         }
 
-        device.remove(collectionManagement, RBI, CommandMethods.RemoveMode.Equals);
+        methodsExecute.remove(collectionManagement, RBI, CommandMethodsExecute.RemoveMode.Equals);
         return;
         //return "";
     }

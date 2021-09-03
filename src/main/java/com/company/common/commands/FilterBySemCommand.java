@@ -1,5 +1,6 @@
 package com.company.common.commands;
 
+import com.company.client.validation.CommandMethodsExecute;
 import com.company.server.collection_manage.CollectionManagement;
 import com.company.client.validation.CommandMethods;
 
@@ -17,6 +18,7 @@ public class FilterBySemCommand extends AbstractCommand {
         public void execute(String CommandArgs) {
             //InputDevice device = new InputDevice();
             CommandMethods device = new CommandMethods();
+            CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
             int FBS;
 
             if(CommandArgs == null) {
@@ -40,7 +42,7 @@ public class FilterBySemCommand extends AbstractCommand {
                     //return "Ожидалось число";
                     }
             }
-        device.filterBySem(collectionManagement, FBS);
+        methodsExecute.filterBySem(collectionManagement, FBS);
             return;
             //return "";
     }

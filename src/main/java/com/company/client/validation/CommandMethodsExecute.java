@@ -1,7 +1,7 @@
-package com.company.validation;
+package com.company.client.validation;
 
-import com.company.collection_manage.CollectionManagement;
-import com.company.collection_objects.StudyGroup;
+import com.company.server.collection_manage.CollectionManagement;
+import com.company.common.collection_objects.StudyGroup;
 
 import java.util.InputMismatchException;
 import java.util.stream.Stream;

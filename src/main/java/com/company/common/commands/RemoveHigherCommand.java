@@ -1,5 +1,6 @@
 package com.company.common.commands;
 
+import com.company.client.validation.CommandMethodsExecute;
 import com.company.server.collection_manage.CollectionManagement;
 import com.company.client.validation.CommandMethods;
 
@@ -19,6 +20,7 @@ public class RemoveHigherCommand extends AbstractCommand {
     public void execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
+        CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
         int RBI;
         if(CommandArgs == null) {
             try {
@@ -41,7 +43,7 @@ public class RemoveHigherCommand extends AbstractCommand {
                 //return "Ожидалось число";
             }
         }
-        device.remove(collectionManagement, RBI, CommandMethods.RemoveMode.High);
+        methodsExecute.remove(collectionManagement, RBI, CommandMethodsExecute.RemoveMode.High);
         return;
         //return "";
     }

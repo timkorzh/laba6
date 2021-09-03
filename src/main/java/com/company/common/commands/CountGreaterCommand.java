@@ -1,5 +1,6 @@
 package com.company.common.commands;
 
+import com.company.client.validation.CommandMethodsExecute;
 import com.company.server.collection_manage.CollectionManagement;
 import com.company.client.validation.CommandMethods;
 
@@ -18,6 +19,7 @@ public class CountGreaterCommand extends AbstractCommand {
     public void execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
+        CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
         int FOE;
 
         if(CommandArgs == null) {
@@ -39,7 +41,7 @@ public class CountGreaterCommand extends AbstractCommand {
                 return;
             }
         }
-        device.countFormOfEducation(collectionManagement, FOE);
+        methodsExecute.countFormOfEducation(collectionManagement, FOE);
 
     }
 
