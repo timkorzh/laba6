@@ -15,7 +15,7 @@ public class ShowCommand extends AbstractCommand {
     @Override
     public void execute(String CommandArgs) {
         collectionManagement.show();
-        for (StudyGroup studyGroup : collection) {
+        for (StudyGroup studyGroup : collectionManagement.getCollection()) {
             System.out.println(
                     "StudyGroup " + '\n' +
                             "id: " + studyGroup.getid() + '\n' +

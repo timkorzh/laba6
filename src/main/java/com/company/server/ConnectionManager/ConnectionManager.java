@@ -7,6 +7,7 @@ import com.company.server.RequestBuilder.RequestBuilder;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Scanner;
 
 public class ConnectionManager {
     private final int port;
@@ -22,6 +23,7 @@ public class ConnectionManager {
         byte[] b = new byte[32757];
         SocketAddress a = new InetSocketAddress(port);
         socket = new DatagramSocket(a);
+        socket.setSoTimeout(1000);
         packet = new DatagramPacket(b, b.length);
         replier = new Replier(socket);
         //requestReader = new RequestReader(new CollectionManagement(), "f"); //TODO: change args or delete RequestReader
@@ -31,18 +33,32 @@ public class ConnectionManager {
 
     public Replier getReplier() { return replier; }
 
+    Scanner sc = new Scanner(System.in);
+    private boolean checkExit() throws IOException {
+        return (System.in.available() > 0 && sc.nextLine().split(" ")[0].equals("exit"));
+    }
+
     public void start(CommandInvoker invoker) throws IOException, ClassNotFoundException {
-        CommandParcel parsel;
+        CommandParcel parcel;
+        boolean receiveTimedOut;
         while (true) {
-            socket.receive(packet);
-            while ((parsel = requestBuilder.append(packet)) == null) socket.receive(packet);
+            if (checkExit()) return;
+            do {
+                receiveTimedOut = false;
+                try {
+                    socket.receive(packet);
+                } catch (SocketTimeoutException ste) {
+                    if (checkExit()) return; //Todo: Эта проверка должна быть на уровень выше
+                    receiveTimedOut = true;
+                }
+            } while (receiveTimedOut || (parcel = requestBuilder.append(packet)) == null);
 
             replier.setAddressPort((InetSocketAddress) packet.getSocketAddress());
-            invoker.execute(parsel.getCommand());
+            invoker.execute(parcel.getCommand(), parcel.getArgs());
             replier.flush();
             /*
             Для многопоточности
-            someCommandQueue.put(parsel);
+            someCommandQueue.put(parcel);
             */
         }
     }

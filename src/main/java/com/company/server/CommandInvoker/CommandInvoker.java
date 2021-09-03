@@ -58,7 +58,7 @@ public class CommandInvoker {
         Matcher m = p.matcher(inputString);
         if (m.find()) {
 
-            commandArgs = m.group(0);
+            commandArgs = m.group(0).substring(2);
         } else {
             commandArgs = null;
         }
