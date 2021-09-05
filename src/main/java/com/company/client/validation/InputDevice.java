@@ -168,8 +168,8 @@ public class InputDevice {
         questions.add(new quiz("Координаты группы в формате X(1); Y(1,0)", new CoordinatesValidator(), "gCoords", true));
         questions.add(new quiz("Число студентов в группе", new StudentsCountValidator(), "stCount", true));
         questions.add(new quiz("Форма обучения " + FormOfEducation.GetStringValues(), new FormOfEducationValidator(), "foedu", false));
-        questions.add(new quiz("У группы есть админ? Если нет, введите пустую строку" + Person.ifPersonExists(), new AdminExistsValidator() , "aExs", true));
         questions.add(new quiz("Семестр " + Semester.GetStringValues(), new SemesterValidator(), "sem", true));
+        questions.add(new quiz("У группы есть админ? Если нет, введите пустую строку" + Person.ifPersonExists(), new AdminExistsValidator() , "aExs", true));
         questions.add(new quiz("Имя админа группы(Фамилия Имя)", new AdminNameValidator(), "aName", true));
         questions.add(new quiz("Серия и номер паспорта(пример: 1234 123456) админа группы", new AdminPassportValidator(), "passport", false));
         questions.add(new quiz("Введите координаты в формате X(0,0); Y(0); Z(-1,0)", new AdminLocationValidator(), "aCoords", false));

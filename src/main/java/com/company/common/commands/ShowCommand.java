@@ -29,6 +29,7 @@ public class ShowCommand extends AbstractCommand {
         }
         return;
         //return "";
+        //TODO: исправить че тут не так. Можно добавить систем аут в стади груп, где всё будет чётко проверяться
     }
 
     @Override

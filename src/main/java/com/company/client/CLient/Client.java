@@ -1,6 +1,7 @@
 package com.company.client.CLient;
 
 import com.company.client.validation.InputDevice;
+import com.company.common.collection_objects.StudyGroup;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class Client {
         //commandSender.send("show\n", this.commandSender.getSocketAddress());
         System.out.println("Готов начать работу, уважаемый пекарь");
         Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
+        String line = scanner.nextLine().trim();
 
         String reply = null;
         while (!line.equals("exit")) {
@@ -52,9 +53,17 @@ public class Client {
                 String commandName = cmd.group(0);
                 Matcher args = pArgs.matcher(line);
                 boolean hasArgs = args.find();
+                InputDevice inputDevice = new InputDevice();
                 if (!hasArgs) {
-                    commandSender.send(commandName + "\n", this.commandSender.getSocketAddress());
 
+                    StudyGroup studyGroup;
+
+                    if(commandName.equals("add") || commandName.equals("update")) {
+                        studyGroup = inputDevice.add();
+                        commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
+                    } else {
+                        commandSender.send(commandName + "\n", this.commandSender.getSocketAddress());
+                    }
                 } else {
                     String commandArgs = args.group(0);
                     commandSender.send(commandName, commandArgs, this.commandSender.getSocketAddress());
