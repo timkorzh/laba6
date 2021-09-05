@@ -69,6 +69,7 @@ public class CollectionManagement {
 
     public void add(StudyGroup group) {
         collection.add(group);
+        out.println("В коллекцию добавлена группа: " + group);
     }
 
     public void edit() {

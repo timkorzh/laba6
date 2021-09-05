@@ -28,11 +28,13 @@ public class AddCommand extends AbstractCommand {
         if (commandArgs instanceof StudyGroup) {
             collectionManagement.add((StudyGroup) commandArgs);
         }
+        //TODO: либо научить сервер обрабатывать эксепшн подобного вида, либо заменить на простую отправку сообщения клиенту
+        else throw new IllegalArgumentException("AddCommand expects to receive a StudyGroup object. " +
+                "Type of received object: " + commandArgs.getClass());
     }
 
     @Override
     public String describe() {
         return ("Добавляет новый элемент в коллекцию." + InputDevice.getScriptName() + "\n Чтобы выйти из команды в режиме построчного ввода, напишите: exitcmd");
     }
-
 }
