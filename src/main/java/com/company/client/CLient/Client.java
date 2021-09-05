@@ -1,9 +1,15 @@
 package com.company.client.CLient;
 
+import com.company.client.validation.InputDevice;
+
 import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.PortUnreachableException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Client {
     private final CommandSender commandSender;
@@ -39,10 +45,21 @@ public class Client {
         while (!line.equals("exit")) {
 
             try {
+                Pattern pCommand = Pattern.compile("(\\w*)[\\s-]?");
+                Pattern pArgs = Pattern.compile("(\\s-.*)$");
+                Matcher cmd = pCommand.matcher(line);
+                cmd.find();
+                String commandName = cmd.group(0);
+                Matcher args = pArgs.matcher(line);
+                boolean hasArgs = args.find();
+                if (!hasArgs) {
+                    commandSender.send(commandName + "\n", this.commandSender.getSocketAddress());
 
-                    commandSender.send(line + "\n", this.commandSender.getSocketAddress());
-                    reply = commandSender.receive();
-
+                } else {
+                    String commandArgs = args.group(0);
+                    commandSender.send(commandName, commandArgs, this.commandSender.getSocketAddress());
+                }
+                reply = commandSender.receive();
 
             } catch (PortUnreachableException e) {
                 System.out.println("Gopa poppa");
