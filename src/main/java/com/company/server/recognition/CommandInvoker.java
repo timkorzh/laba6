@@ -47,11 +47,11 @@ public class CommandInvoker {
         return hashMap;
     }
 
-    public void execute(String inputString) {
-        execute(inputString, null);
+    public String execute(String inputString) {
+        return execute(inputString, null);
     }
 
-    public void execute(String inputString, Object args) {
+    public String execute(String inputString, Object args) {
         String commandName, commandArgs;
         commandName = inputString.split("\\s")[0];
         Pattern p = Pattern.compile("\\s-.*");
@@ -63,16 +63,16 @@ public class CommandInvoker {
             commandArgs = null;
         }
 
-        try {
-            hashMap.get(commandName).execute(commandArgs, args);
+        if (hashMap.containsKey(commandName)) {
+            String result = hashMap.get(commandName).execute(commandArgs, args);
 
             history.push(commandName);
             if (history.size() > 7) {
                 history.removeLast();
             }
-
-        } catch (NullPointerException e) {
-            System.out.println("Пекарь, " + inputString + " - незарегистрированная команда. Похудей пальчики или напиши help.");
+            return result;
+        } else {
+            return "Пекарь, " + inputString + " - незарегистрированная команда. Похудей пальчики или напиши help.";
         }
     }
 

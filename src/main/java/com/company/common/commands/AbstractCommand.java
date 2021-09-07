@@ -1,10 +1,10 @@
 package com.company.common.commands;
 
 public abstract class AbstractCommand {
-    public abstract void execute(String commandArgs);
+    public abstract String execute(String commandArgs);
 
-    public void execute(String stingArgs, Object objArgs) {
-        execute(stingArgs);
+    public String execute(String stingArgs, Object objArgs) {
+        return execute(stingArgs);
     }
 
     public abstract String describe();

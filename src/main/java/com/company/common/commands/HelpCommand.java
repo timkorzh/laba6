@@ -17,12 +17,13 @@ public class HelpCommand extends AbstractCommand {
     }
 
         @Override
-        public void execute(String CommandArgs) {
+        public String execute(String CommandArgs) {
+            StringBuilder result = new StringBuilder(String.format("%-45s %-45s %n", "ИМЯ КОМАНДЫ", "ОПИСАНИЕ"));
             HashMap<String, AbstractCommand> hashMap = commandInvoker.getHashMap();
-            System.out.printf("%-45s %-45s %n", "ИМЯ КОМАНДЫ", "ОПИСАНИЕ");
             for (String commandName : hashMap.keySet()) {
-                System.out.printf("%-45s %-45s %n", commandName, commandInvoker.getHashMap().get(commandName).describe());
+                result.append(String.format("%-45s %-45s %n", commandName, commandInvoker.getHashMap().get(commandName).describe()));
 
             }
-    }
+            return result.toString();
+        }
     }

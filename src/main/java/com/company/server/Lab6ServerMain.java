@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 public class Lab6ServerMain {
+    //TODO: Скрипт, наверное, должен обрабатываться на клиенте
     private static final int DEFAULT_PORT = 22;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {

@@ -29,36 +29,42 @@ public class CollectionManagement {
         return collection;
     }
 
-    public void clear() {
+    public String clear() {
         collection.clear();
-        out.println("Произошла очистка коллекции");
+        return "Произошла очистка коллекции";
     }
     public String info() {
-        String Info;
-        Info = this.getClass().getTypeName();
-        Info += " | ";
-        Info += this.CreationDate;
-        Info += " | ";
-        Info += String.valueOf(this.collection.size());
-        Info += " | ";
-        return Info;
+        String info;
+        info = this.getClass().getTypeName();
+        info += " | ";
+        info += this.CreationDate;
+        info += " | ";
+        info += String.valueOf(this.collection.size());
+        info += " | ";
+        return info;
     }
-
-    public void show() {
+/*
+    public String show() {
+        StringBuilder showStr = new StringBuilder();
         for (StudyGroup studyGroup : collection) {
-            out.println(
-                    "StudyGroup " + '\n' +
-                            "id: " + studyGroup.getid() + '\n' +
-                            "StudyCounter: " + studyGroup.getStudentsCount() + '\n' +
-                            "Coordinates" + '\n' + " X: " + studyGroup.getCoordinates().getX() + '\n' + " Y: " + studyGroup.getCoordinates().getY() + '\n' +
-                            "Admin Name: " + studyGroup.getGroupAdmin().getName() + '\n' + "Admin Passport: " + studyGroup.getGroupAdmin().getPassportID() + '\n' + "Admin Location: " + '\n' + "X: " + studyGroup.getGroupAdmin().getLocation().getX() + '\n' + "Y: " + studyGroup.getGroupAdmin().getLocation().getY() + '\n' + "Z: " + studyGroup.getGroupAdmin().getLocation().getZ() + '\n' +
-                            "Creation Date: " + studyGroup.getCreationDate() + '\n' +
-                            "Name: " + studyGroup.getName() + '\n' +
-                            "Form of education: " + studyGroup.getFormOfEducation() + '\n' +
-                            "Semester: " + studyGroup.getSemesterEnum());
+            showStr.append(
+                    "\n\nStudyGroup \nid: ").append(studyGroup.getid())
+                    .append("\nStudyCounter: ").append(studyGroup.getStudentsCount())
+                    .append("\nCoordinates\n X: ").append(studyGroup.getCoordinates().getX())
+                    .append("\n Y: ").append(studyGroup.getCoordinates().getY())
+                    .append("\nAdmin Name: ").append(studyGroup.getGroupAdmin().getName())
+                    .append("\nAdmin Passport: ").append(studyGroup.getGroupAdmin().getPassportID())
+                    .append("\nAdmin Location:\n X: ").append(studyGroup.getGroupAdmin().getLocation().getX())
+                    .append("\n Y: ").append(studyGroup.getGroupAdmin().getLocation().getY())
+                    .append("\n Z: ").append(studyGroup.getGroupAdmin().getLocation().getZ())
+                    .append("\nCreation Date: ").append(studyGroup.getCreationDate())
+                    .append("\nName: ").append(studyGroup.getName())
+                    .append("\nForm of education: ").append(studyGroup.getFormOfEducation())
+                    .append("\nSemester: ").append(studyGroup.getSemesterEnum());
         }
+        return showStr.toString();
     }
-
+*/
     public void add() {
         collection.add(InputDevice.input());
     }
@@ -67,14 +73,17 @@ public class CollectionManagement {
         collection.add(InputDevice.inputFromFile(CommandArgs));
     }
 
-    public void add(StudyGroup group) {
+    public String add(StudyGroup group) {
         collection.add(group);
+        return "В коллекцию добавлена группа: " + group;
     }
 
-    public void edit() {
+    public String edit() {
         //TODO
         //InputDevice.edit();
+        return "";
     }
+
     public void edit(StudyGroup studyGroup, String CommandArgs) {
         InputDevice.editFromFile(studyGroup, CommandArgs);
     }

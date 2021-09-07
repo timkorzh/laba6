@@ -30,11 +30,14 @@ public class FileCommands {
         }
 
         @Override
-        public void execute(String CommandArgs) {
+        public String execute(String CommandArgs) {
             if (filePath != null && !filePath.matches("[/\\\\]dev.*")) {
                 XMLParser xmlParser = new XMLParser(filePath);
                 xmlParser.saveCollection(collectionManagement);
-            }//TODO: стоит сообщать, если ничего не произошло
+                return "Коллекция сохранена в файл " + filePath;
+            } else {//TODO: стоит сообщать, если ничего не произошло
+                return "Не удалось сохранить коллекцию";
+            }
         }
 
         @Override
@@ -51,17 +54,20 @@ public class FileCommands {
         }
 
         @Override
-        public void execute(String filePath) {
+        public String execute(String filePath) {
             if(filePath != null) {
                 if (!filePath.matches("[/\\\\]dev.*"))
                     FileCommands.this.filePath = filePath;
-                else return; //TODO: Ok?
+                else return "Файл " + filePath + " недоступен для загрузки"; //TODO: Ok?
             }
 
             if(FileCommands.this.filePath != null && !FileCommands.this.filePath.matches("[/\\\\]dev.*")) {
                 XMLParser parser = new XMLParser(FileCommands.this.filePath);
                 collectionManagement.getCollection().addAll(parser.deParseCollection().getCollection());
                 //requestReader.setCollectionManagement(parser.deParseCollection()); //TODO: clean
+                return "Коллекция загружена из файла " + FileCommands.this.filePath;
+            } else {
+                return "Не удалось загрузить коллекцию из файла " + FileCommands.this.filePath;
             }
         }
 
