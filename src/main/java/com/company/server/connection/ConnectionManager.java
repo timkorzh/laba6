@@ -1,8 +1,10 @@
 package com.company.server.connection;
 
 import com.company.common.cmdparcel.CommandParcel;
+import com.company.common.collection_objects.StudyGroup;
 import com.company.server.recognition.CommandInvoker;
 import com.company.server.response.Replier;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.IOException;
 import java.io.PrintStream;
