@@ -32,6 +32,7 @@ public class ShowCommand extends AbstractCommand {
                     .append("\nSemester: ").append(studyGroup.getSemesterEnum());
         }
         return showStr.toString();
+        //TODO: исправить че тут не так. Можно добавить систем аут в стади груп, где всё будет чётко проверяться
     }
 
     @Override
