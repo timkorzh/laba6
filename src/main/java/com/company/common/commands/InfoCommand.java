@@ -10,11 +10,8 @@ public class InfoCommand extends AbstractCommand {
     }
 
         @Override
-        public void execute(String CommandArgs) {
-            collectionManagement.info();
-            System.out.println("Вывожу информацию...." + collectionManagement.info() + "и.т.д.");
-            return;
-            //return "";
+        public String execute(String CommandArgs) {
+            return "Вывожу информацию...." + collectionManagement.info() + "и.т.д.";
         }
 
         @Override

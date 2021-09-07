@@ -13,22 +13,25 @@ public class ShowCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(String CommandArgs) {
-        collectionManagement.show();
+    public String execute(String CommandArgs) {
+        StringBuilder showStr = new StringBuilder();
         for (StudyGroup studyGroup : collectionManagement.getCollection()) {
-            System.out.println(
-                    "StudyGroup " + '\n' +
-                            "id: " + studyGroup.getid() + '\n' +
-                            "StudyCounter: " + studyGroup.getStudentsCount() + '\n' +
-                            "Coordinates" + '\n' + " X: " + studyGroup.getCoordinates().getX() + '\n' + " Y: " + studyGroup.getCoordinates().getY() + '\n' +
-                            "Admin Name: " + studyGroup.getGroupAdmin().getName() + '\n' + "Admin Passport: " + studyGroup.getGroupAdmin().getPassportID() + '\n' + "Admin Location: " + '\n' + "X: " + studyGroup.getGroupAdmin().getLocation().getX() + '\n' + "Y: " + studyGroup.getGroupAdmin().getLocation().getY() + '\n' + "Z: " + studyGroup.getGroupAdmin().getLocation().getZ() + '\n' +
-                            "Creation Date: " + studyGroup.getCreationDate() + '\n' +
-                            "Name: " + studyGroup.getName() + '\n' +
-                            "Form of education: " + studyGroup.getFormOfEducation() + '\n' +
-                            "Semester: " + studyGroup.getSemesterEnum());
+            showStr.append(
+                    "\n\nStudyGroup \nid: ").append(studyGroup.getid())
+                    .append("\nStudyCounter: ").append(studyGroup.getStudentsCount())
+                    .append("\nCoordinates\n X: ").append(studyGroup.getCoordinates().getX())
+                    .append("\n Y: ").append(studyGroup.getCoordinates().getY())
+                    .append("\nAdmin Name: ").append(studyGroup.getGroupAdmin().getName())
+                    .append("\nAdmin Passport: ").append(studyGroup.getGroupAdmin().getPassportID())
+                    .append("\nAdmin Location:\n X: ").append(studyGroup.getGroupAdmin().getLocation().getX())
+                    .append("\n Y: ").append(studyGroup.getGroupAdmin().getLocation().getY())
+                    .append("\n Z: ").append(studyGroup.getGroupAdmin().getLocation().getZ())
+                    .append("\nCreation Date: ").append(studyGroup.getCreationDate())
+                    .append("\nName: ").append(studyGroup.getName())
+                    .append("\nForm of education: ").append(studyGroup.getFormOfEducation())
+                    .append("\nSemester: ").append(studyGroup.getSemesterEnum());
         }
-        return;
-        //return "";
+        return showStr.toString();
     }
 
     @Override

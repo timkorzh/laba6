@@ -12,19 +12,21 @@ public class MinByStudentsCountCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
     }
     @Override
-    public void execute(String CommandArgs) {
+    public String execute(String CommandArgs) {
 
         if(collectionManagement.getCollection().size() != 0 && collectionManagement.getCollection() != null) {
 
             Optional<StudyGroup> MINGroup = collectionManagement.getCollection().stream().min(Comparator.comparingInt(StudyGroup::getStudentsCount));
 
-            MINGroup.ifPresent(studyGroup -> System.out.println("Группа с минимальным количеством студентов: " + studyGroup.getId()));
+            StringBuilder result = new StringBuilder();
+
+            MINGroup.ifPresent(studyGroup -> result.append("Группа с минимальным количеством студентов: " + studyGroup.getId()));
+
+            return result.toString();
         }
         else {
-            System.out.println("Не могу найти группу с минимальным количсетвом студентов, так как групп нет. Мне очень жаль(");
+            return "Не могу найти группу с минимальным количсетвом студентов, так как групп нет. Мне очень жаль(";
         }
-        return;
-        //return "";
     }
     @Override
     public String describe() {

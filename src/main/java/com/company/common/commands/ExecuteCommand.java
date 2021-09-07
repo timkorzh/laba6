@@ -11,14 +11,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExecuteCommand extends AbstractCommand {
-
+//TODO: Эта команда, наверное, серверу не нужна
     CommandInvoker commandInvoker;
     public ExecuteCommand(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
     }
 
         @Override
-        public void execute(String CommandArgs) {
+        public String execute(String CommandArgs) {
             boolean finished = false;
             String result = "";
             //InputDevice device = new InputDevice();
@@ -64,8 +64,7 @@ public class ExecuteCommand extends AbstractCommand {
             } else {
                 System.out.println(result);
             }
-            return;
-            //return result;
+           return result;
         }
 
         @Override

@@ -12,7 +12,7 @@ public class AddCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(String commandArgs) {
+    public String execute(String commandArgs) {
 
         if (commandArgs == null) {
             collectionManagement.add();
@@ -21,12 +21,18 @@ public class AddCommand extends AbstractCommand {
             collectionManagement.add(commandArgs);
         }
 
+        return "";
+
     }
 
     @Override
-    public void execute(String strArgs, Object commandArgs) {
+    public String execute(String strArgs, Object commandArgs) {
+        if (commandArgs == null)
+            throw new NullPointerException("AddCommand expects to receive a StudyGroup object. " +
+                    "Received null.");
+
         if (commandArgs instanceof StudyGroup) {
-            collectionManagement.add((StudyGroup) commandArgs);
+            return collectionManagement.add((StudyGroup) commandArgs);
         }
         //TODO: либо научить сервер обрабатывать эксепшн подобного вида, либо заменить на простую отправку сообщения клиенту
         else throw new IllegalArgumentException("AddCommand expects to receive a StudyGroup object. " +

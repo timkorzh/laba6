@@ -5,6 +5,7 @@ import com.company.server.recognition.CommandInvoker;
 import com.company.server.response.Replier;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.*;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ public class ConnectionManager {
     public void start(CommandInvoker invoker) throws IOException, ClassNotFoundException {
         CommandParcel parcel;
         boolean receiveTimedOut;
+        PrintStream out = new PrintStream(replier);
         while (true) {
             if (checkExit()) return;
             do {
@@ -53,7 +55,7 @@ public class ConnectionManager {
             } while (receiveTimedOut || (parcel = requestBuilder.append(packet)) == null);
 
             replier.setAddressPort((InetSocketAddress) packet.getSocketAddress());
-            invoker.execute(parcel.getCommand(), parcel.getArgs());
+            out.print(invoker.execute(parcel.getCommand(), parcel.getArgs()));
             replier.flush();
             /*
             Для многопоточности

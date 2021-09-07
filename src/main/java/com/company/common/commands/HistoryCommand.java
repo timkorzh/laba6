@@ -10,10 +10,8 @@ public class HistoryCommand extends AbstractCommand {
     }
 
         @Override
-            public void execute(String CommandArgs) {
-            System.out.println("Последние команды:" + commandInvoker.history.toString());
-            return;
-            //return "";
+            public String execute(String CommandArgs) {
+            return "Последние команды:" + commandInvoker.history.toString();
         }
 
         @Override
