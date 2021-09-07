@@ -3,7 +3,7 @@ package com.company.common.collection_objects;
 import java.io.*;
 import java.time.LocalDateTime;
 
-public class StudyGroup implements Serializable {
+public class  StudyGroup implements Serializable {
 
 //TODO: compareTo
     public StudyGroup() {
@@ -104,6 +104,18 @@ public class StudyGroup implements Serializable {
 
     public Integer getStudentsCount() {
         return studentsCount;
+    }
+
+    public String toString() {
+        return "StudyGroup " + '\n' +
+                "id: " + id + '\n' +
+                "StudyCounter: " + studentsCount + '\n' +
+                "Coordinates" + '\n' + " X: " + coordinates.getX() + '\n' + " Y: " + coordinates.getY() + '\n' +
+                "Admin Name: " + this.getGroupAdmin().getName() + '\n' + "Admin Passport: " + this.getGroupAdmin().getPassportID() + '\n' + "Admin Location: " + '\n' + "X: " + this.getGroupAdmin().getLocation().getX() + '\n' + "Y: " + this.getGroupAdmin().getLocation().getY() + '\n' + "Z: " + this.getGroupAdmin().getLocation().getZ() + '\n' +
+                "Creation Date: " + creationDate + '\n' +
+                "Name: " + name + '\n' +
+                "Form of education: " + formOfEducation + '\n' +
+                "Semester: " + semesterEnum;
     }
 
 
