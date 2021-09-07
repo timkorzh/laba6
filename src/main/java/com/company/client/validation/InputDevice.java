@@ -200,7 +200,7 @@ public class InputDevice {
         return Keys.toString();
     }
 
-    public void edit(CollectionManagement collectionManagement) {
+    public void  edit(CollectionManagement collectionManagement) {
 
         StudyGroup GroupElement = null;
         Scanner scanner = new Scanner(System.in);

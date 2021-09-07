@@ -22,11 +22,14 @@ public class CommandMethodsExecute {
             }
             switch (Equals) {
                 case Equals : {collectionManagement.getCollection().removeIf(studyGroup -> RemoveById == studyGroup.getid());
-                    System.out.println("Группа с id: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");}
+                    System.out.println("Группа с id: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");
+                    break; }
                 case Low : {collectionManagement.getCollection().removeIf(a -> a.getId() < RemoveById);
-                    System.out.println("Группа с id ниже, чем: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");}
+                    System.out.println("Группа с id ниже, чем: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");
+                    break;}
                 case High : {collectionManagement.getCollection().removeIf(a -> a.getId() > RemoveById);
-                    System.out.println("Группы с id выше, чем: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");}
+                    System.out.println("Группы с id выше, чем: " + RemoveById + " была успешно удалена! ~~~~~~~~~~~Помянем~~~~~~~~~~");
+                    break;}
             }
 
         } catch (InputMismatchException Ex) {

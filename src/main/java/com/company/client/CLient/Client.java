@@ -58,7 +58,10 @@ public class Client {
 
                     StudyGroup studyGroup;
 
-                    if(commandName.equals("add") || commandName.equals("update")) {
+                    if(commandName.equals("add")) {
+                        studyGroup = inputDevice.add();
+                        commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
+                    } else if(commandName.equals("update")) {
                         studyGroup = inputDevice.add();
                         commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
                     } else {
