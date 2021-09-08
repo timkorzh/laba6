@@ -90,8 +90,8 @@ public class CommandMethods {
         while (sem == null) {
             System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());
             try {
-                sem = Semester.values()[scanner.nextInt()];
-            } catch (ArrayIndexOutOfBoundsException | InputMismatchException ex) {
+                sem = Semester.values()[Integer.valueOf(scanner.nextLine())];
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException ex) {
                 System.out.println("Введите одно из допустимых значений");
             }
         }
