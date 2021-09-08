@@ -3,6 +3,7 @@ package com.company.client.CLient;
 import com.company.client.validation.CommandMethods;
 import com.company.client.validation.CommandMethodsExecute;
 import com.company.client.validation.InputDevice;
+import com.company.common.collection_objects.Semester;
 import com.company.common.collection_objects.StudyGroup;
 
 import java.io.IOException;
@@ -68,8 +69,8 @@ public class Client {
                         commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
                     } else if(commandName.equals("filter_by_semester_enum")) {
                         CommandMethods device = new CommandMethods();
-                        int FBS = device.readFilterSem();
-                        commandSender.send(commandName + "\n", String.valueOf(FBS),this.commandSender.getSocketAddress());
+                        Semester FBS = device.readFilterSem();
+                        commandSender.send(commandName + "\n", FBS, this.commandSender.getSocketAddress());
                     } else {
                         commandSender.send(commandName + "\n", this.commandSender.getSocketAddress());
                     }

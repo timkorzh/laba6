@@ -1,6 +1,7 @@
 package com.company.common.commands;
 
 import com.company.client.validation.CommandMethodsExecute;
+import com.company.common.collection_objects.Semester;
 import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.client.validation.CommandMethods;
 
@@ -15,15 +16,19 @@ public class FilterBySemCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
         }
         @Override
-        public String execute(String CommandArgs) {
+        public String execute(String commandArgs) {
             return "Укажите аргументы для фильтрации";
     }
     @Override
-    public String execute(String strArgs, Object CommandArgs) {
+    public String execute(String strArgs, Object commandArgs) {
         try {
             CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
-            int FBS = Integer.parseInt(CommandArgs.toString());
-            return methodsExecute.filterBySem(collectionManagement, FBS);
+            if (commandArgs == null) throw new NullPointerException("FilterBySemCommand expects to receive a Semester object. " +
+                    "Received null.");
+            if (commandArgs instanceof Semester) {
+                return methodsExecute.filterBySem(collectionManagement, (Semester) commandArgs);
+            } else throw new IllegalArgumentException("FilterBySemCommand expects to receive a Semester object. " +
+                    "Type of received object: " + commandArgs.getClass());
         } catch (Exception e) {
             return e.getLocalizedMessage();
         }

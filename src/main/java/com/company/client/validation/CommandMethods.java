@@ -84,12 +84,18 @@ public class CommandMethods {
 
 
     }
-    public int readFilterSem() {
-        int Sem;
+    public Semester readFilterSem() {
+        Semester sem = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());
-        Sem = scanner.nextInt();
-        return Sem;
+        while (sem == null) {
+            System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());
+            try {
+                sem = Semester.values()[scanner.nextInt()];
+            } catch (ArrayIndexOutOfBoundsException | InputMismatchException ex) {
+                System.out.println("Введите одно из допустимых значений");
+            }
+        }
+        return sem;
 
     }
     public void filterBySem(CollectionManagement collectionManagement, Integer Sem) {
