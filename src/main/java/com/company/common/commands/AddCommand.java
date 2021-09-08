@@ -32,7 +32,9 @@ public class AddCommand extends AbstractCommand {
                     "Received null.");
 
         if (commandArgs instanceof StudyGroup) {
-            return collectionManagement.add((StudyGroup) commandArgs);
+            StudyGroup newGroup = (StudyGroup) commandArgs;
+            newGroup.setId(StudyGroup.getGroupCounter());
+            return collectionManagement.add(newGroup);
         }
         //TODO: либо научить сервер обрабатывать эксепшн подобного вида, либо заменить на простую отправку сообщения клиенту
         else throw new IllegalArgumentException("AddCommand expects to receive a StudyGroup object. " +

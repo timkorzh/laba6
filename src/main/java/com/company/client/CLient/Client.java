@@ -1,5 +1,7 @@
 package com.company.client.CLient;
 
+import com.company.client.validation.CommandMethods;
+import com.company.client.validation.CommandMethodsExecute;
 import com.company.client.validation.InputDevice;
 import com.company.common.collection_objects.StudyGroup;
 
@@ -62,8 +64,12 @@ public class Client {
                         studyGroup = inputDevice.add();
                         commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
                     } else if(commandName.equals("update")) {
-                        studyGroup = inputDevice.add();
+                        studyGroup = inputDevice.update();
                         commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
+                    } else if(commandName.equals("filter_by_semester_enum")) {
+                        CommandMethods device = new CommandMethods();
+                        int FBS = device.readFilterSem();
+                        commandSender.send(commandName + "\n", String.valueOf(FBS),this.commandSender.getSocketAddress());
                     } else {
                         commandSender.send(commandName + "\n", this.commandSender.getSocketAddress());
                     }

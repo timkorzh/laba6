@@ -19,7 +19,7 @@ public class  StudyGroup implements Serializable {
         this.semesterEnum = semester;
         this.groupAdmin = admin;
         creationDate = LocalDateTime.now();
-        id = ++groupCounter;
+        //id = ++groupCounter;
     }
 
     public void setStudentsCount(Integer studentsCount) {
@@ -53,9 +53,12 @@ public class  StudyGroup implements Serializable {
     }
 
     public static int getGroupCounter() {
-        return groupCounter;
+        return ++groupCounter;
     }
 
+    public static void setGroupCounter(int value) {
+        groupCounter = value;
+    }
 
     public FormOfEducation getFormOfEducation() {
         return formOfEducation;
@@ -107,11 +110,18 @@ public class  StudyGroup implements Serializable {
     }
 
     public String toString() {
+    String adminProperties = null;
+    if(groupAdmin != null) {
+        adminProperties = "Admin Name: " + groupAdmin.getName() + '\n' + "Admin Passport: " + groupAdmin.getPassportID() + '\n' + "Admin Location: " + '\n' + "X: " + this.groupAdmin.getLocation().getX() + '\n' + "Y: " + this.groupAdmin.getLocation().getY() + '\n' + "Z: " + this.groupAdmin.getLocation().getZ();
+
+    } else {
+        adminProperties = "Admin: " + null;
+    }
         return "StudyGroup " + '\n' +
                 "id: " + id + '\n' +
                 "StudyCounter: " + studentsCount + '\n' +
                 "Coordinates" + '\n' + " X: " + coordinates.getX() + '\n' + " Y: " + coordinates.getY() + '\n' +
-                "Admin Name: " + this.getGroupAdmin().getName() + '\n' + "Admin Passport: " + this.getGroupAdmin().getPassportID() + '\n' + "Admin Location: " + '\n' + "X: " + this.getGroupAdmin().getLocation().getX() + '\n' + "Y: " + this.getGroupAdmin().getLocation().getY() + '\n' + "Z: " + this.getGroupAdmin().getLocation().getZ() + '\n' +
+                adminProperties + '\n' +
                 "Creation Date: " + creationDate + '\n' +
                 "Name: " + name + '\n' +
                 "Form of education: " + formOfEducation + '\n' +

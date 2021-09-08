@@ -66,11 +66,11 @@ public class CollectionManagement {
     }
 */
     public void add() {
-        collection.add(InputDevice.input());
+        this.add(InputDevice.input());
     }
 
     public void add(String CommandArgs) {
-        collection.add(InputDevice.inputFromFile(CommandArgs));
+        this.add(InputDevice.inputFromFile(CommandArgs));
     }
 
     public String add(StudyGroup group) {

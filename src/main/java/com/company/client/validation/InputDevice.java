@@ -62,8 +62,12 @@ class FormOfEducationValidator implements IValidator {
     @Override
     public boolean IsValid(String input) {
         try {
-            Integer.parseInt(input);
-            return(Integer.parseInt(input) < FormOfEducation.values().length);
+            //if(input.equals("")) {
+                //FormOfEducation.NullString(input);
+              //  return true;
+            //}
+                //Integer.parseInt(input);
+                return input == null || input.isEmpty() || Integer.parseInt(input) < FormOfEducation.values().length;
         } catch (NumberFormatException e) {
             return  false;
         }
@@ -149,7 +153,7 @@ class AdminLocationValidator implements IValidator {
 
     @Override
     public boolean IsValid(String input) {
-        return input.matches("\\d+\\.?,?\\d*; ?\\d+;? ?[-]?\\d*\\.?,?\\d*");
+        return input.matches("((?<=^|\\;)(?:\\d+[.,]\\d+|\\d+)(?:\\;|$)){3}");
     }
 
     @Override
@@ -407,6 +411,12 @@ public class InputDevice {
         for (quiz answer : questions) {
             System.out.println(answer.answer);
         }
+        FormOfEducation f = null;
+        String formOfEducation = questions.get(3).answer;
+        if(formOfEducation != null && !formOfEducation.isEmpty()) {
+            f = FormOfEducation.values()[Integer.parseInt(formOfEducation)];
+        }
+
         Person Admin = null;
         AdminExistsValidator admValid = (AdminExistsValidator)(questions.get(5).validator);
 
@@ -420,12 +430,27 @@ public class InputDevice {
         return new StudyGroup(questions.get(0).answer,
                 new Coordinates(questions.get(1).answer),
                 Integer.parseInt(questions.get(2).answer),
-                FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)],
+                f,
                 Semester.values()[Integer.parseInt(questions.get(4).answer)],
                 Admin);
 
     }
 
+    public StudyGroup update(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите ID группы для редактирования");
+
+        try {
+            int groupId = scanner.nextInt();
+            StudyGroup newGroup = this.add();
+            newGroup.setId(groupId);
+            return newGroup;
+        }
+        catch (InputMismatchException Ex) {
+            System.out.println("Введите число");
+            return null;
+        }
+    }
     public StudyGroup addFromFile(String CommandArgs) {
 
         boolean ImportantQuestionMistake = false;

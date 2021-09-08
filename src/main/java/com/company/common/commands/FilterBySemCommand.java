@@ -16,29 +16,17 @@ public class FilterBySemCommand extends AbstractCommand {
         }
         @Override
         public String execute(String CommandArgs) {
-            //InputDevice device = new InputDevice();
-            CommandMethods device = new CommandMethods();
+            return "Укажите аргументы для фильтрации";
+    }
+    @Override
+    public String execute(String strArgs, Object CommandArgs) {
+        try {
             CommandMethodsExecute methodsExecute = new CommandMethodsExecute();
-            int FBS;
-
-            if(CommandArgs == null) {
-                try {
-                    FBS = device.readFilterSem();//TODO: этот метод отсюда надо убрать
-                } catch (InputMismatchException Ex) {
-                    return "Введите число";
-                }
-            }
-            else {
-                Pattern p = Pattern.compile("-sem (\\d+?)( -|$)");
-                Matcher m = p.matcher(CommandArgs);
-                if (m.find()) {
-                    FBS = Integer.parseInt(m.group(1));
-                }
-                else {
-                    return "Ожидалось число";
-                }
-            }
+            int FBS = Integer.parseInt(CommandArgs.toString());
             return methodsExecute.filterBySem(collectionManagement, FBS);
+        } catch (Exception e) {
+            return e.getLocalizedMessage();
+        }
     }
 
         @Override

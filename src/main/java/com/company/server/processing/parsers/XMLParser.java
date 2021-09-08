@@ -94,7 +94,7 @@ public class XMLParser {
 
                 collectionManagement.getCollection().add(studyGroup);
             }
-
+            StudyGroup.setGroupCounter(maxId);
         } catch (ParserConfigurationException e) {
             System.out.println("Ошибка с конфигом парсера, уважаемый пекарь(((");
         } catch (SAXException e) {

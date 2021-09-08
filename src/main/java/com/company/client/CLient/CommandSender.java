@@ -12,8 +12,8 @@ public class CommandSender {
 
         this.datagramChannel = (DatagramChannel)ConnectionSetter.getDatagramChannel(this.socketAddress).configureBlocking(false);
 
-        this.datagramSocket = new DatagramSocket();
-        this.datagramSocket.setSoTimeout(10000);
+        //this.datagramSocket = new DatagramSocket();
+        //this.datagramSocket.setSoTimeout(10000);
     }
 
     private SocketAddress socketAddress;
@@ -23,7 +23,7 @@ public class CommandSender {
 
     private DatagramChannel datagramChannel;
 
-    private DatagramSocket datagramSocket;
+    //private DatagramSocket datagramSocket;
 
     //TODO: Убрать параметр SocketAddress
     public void send(String command, SocketAddress a) throws IOException {

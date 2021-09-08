@@ -13,16 +13,18 @@ public class UpdateCommand extends AbstractCommand {
     public UpdateCommand(CollectionManagement collectionManagement) {
         this.collectionManagement = collectionManagement;
     }
-
     @Override
-    public String execute(String CommandArgs) {
+    public String execute(String commandArgs) {
+        return "";
+    }
+    @Override
+    public String execute(String strArgs, Object CommandArgs) {
         if (CommandArgs != null) {
-            Pattern p = Pattern.compile("-id (\\d+?)( -|$)");
-            Matcher m = p.matcher(CommandArgs);
-            if (m.find()) {
-                int GroupId = Integer.parseInt(m.group(1).trim());
-                if (collectionManagement.getCollection().stream().anyMatch(n -> n.getId() == GroupId)) {
-                    InputDevice.editFromFile(((StudyGroup) collectionManagement.getCollection().stream().filter(n -> GroupId == n.getId()).toArray()[0]), CommandArgs);
+            StudyGroup group = (StudyGroup) CommandArgs;
+            int GroupId = group.getId();
+           if (GroupId > 0) {
+                if (collectionManagement.getCollection().removeIf(studyGroup -> studyGroup.getId() == GroupId)) {
+                    collectionManagement.add(group);
                 } else {
                     return "Ничего не нашёл по этому номеру((";
                 }
