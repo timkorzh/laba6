@@ -21,7 +21,6 @@ public class ExecuteCommand extends AbstractCommand {
         public String execute(String CommandArgs) {
             boolean finished = false;
             String result = "";
-            //InputDevice device = new InputDevice();
             CommandMethods device = new CommandMethods();
             Path REF = null;
             if (CommandArgs == null) {

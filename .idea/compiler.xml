@@ -8,9 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="laba6" />
-        <module name="laba5" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="laba6 (1)" target="1.5" />
+      <module name="laba6-client" target="1.8" />
+      <module name="laba6_server" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

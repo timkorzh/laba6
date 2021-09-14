@@ -9,7 +9,7 @@ import java.io.PrintStream;
 
 public class Lab6ServerMain {
     //TODO: Скрипт, наверное, должен обрабатываться на клиенте
-    private static final int DEFAULT_PORT = 22;
+    private static final int DEFAULT_PORT = 6756;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         String fileName = System.getenv("INPUT_FILE_PATH");

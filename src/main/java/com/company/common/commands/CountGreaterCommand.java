@@ -1,8 +1,8 @@
 package com.company.common.commands;
 
+import com.company.client.validation.CommandMethods;
 import com.company.client.validation.CommandMethodsExecute;
 import com.company.server.processing.collection_manage.CollectionManagement;
-import com.company.client.validation.CommandMethods;
 
 import java.util.InputMismatchException;
 import java.util.regex.Matcher;

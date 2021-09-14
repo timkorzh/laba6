@@ -37,7 +37,7 @@ public class ConnectionManager {
 
     Scanner sc = new Scanner(System.in);
     private boolean checkExit() throws IOException {
-        return (System.in.available() > 0 && sc.nextLine().split(" ")[0].equals("exit"));
+        return (System.in.available() > 0 || sc.nextLine().split(" ")[0].equals("exit"));
     }
 
     public void start(CommandInvoker invoker) throws IOException, ClassNotFoundException {

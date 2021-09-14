@@ -1,4 +1,4 @@
-package collection_objects.StudyGroupField;
+package com.company.common.collection_objects;
 
 import com.company.common.collection_objects.Location;
 import com.company.common.collection_objects.StudyGroup;

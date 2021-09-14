@@ -1,6 +1,6 @@
 package com.company.server;
 
-import collection_objects.StudyGroupField.StudyGroupField;
+import com.company.common.collection_objects.StudyGroupField;
 import com.company.server.processing.collection_manage.*;
 import com.company.common.collection_objects.*;
 
