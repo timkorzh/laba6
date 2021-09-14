@@ -9,10 +9,13 @@ import com.company.common.cmdparcel.CommandParcel;
 public class CommandSender {
     public CommandSender(InetAddress addr, int port) throws IOException {
         this.socketAddress = new InetSocketAddress(addr, port);
-        this.datagramChannel = (DatagramChannel)ConnectionSetter.getDatagramChannel(this.socketAddress).configureBlocking(false);
+        this.datagramSocket = new DatagramSocket();
+        //this.datagramChannel = (DatagramChannel)ConnectionSetter.getDatagramChannel(this.socketAddress).configureBlocking(false);
     }
 
     private SocketAddress socketAddress;
+
+    private DatagramSocket datagramSocket;
 
     public CommandSender() {
 
@@ -22,7 +25,7 @@ public class CommandSender {
         return socketAddress;
     }
 
-    private DatagramChannel datagramChannel;
+    //private DatagramChannel datagramChannel;
 
       public void send(String command, SocketAddress a) throws IOException {
         send(new CommandParcel(command), a);
@@ -33,6 +36,7 @@ public class CommandSender {
     }
 
     public void send(CommandParcel commandParcel, SocketAddress a) throws IOException {
+
         //TODO: реализацию можно вынести в специальный поток
         ByteBuffer bBuf;
         byte[] bArr;
@@ -47,43 +51,37 @@ public class CommandSender {
             objOut.writeObject(bArr.length);
             bBuf = ByteBuffer.wrap(byteOut.toByteArray(), 0, byteOut.size());
         }
-        datagramChannel.send(bBuf, a);
+
+        DatagramPacket packet = new DatagramPacket(bArr, bArr.length, a);
+        datagramSocket.send(packet);
+        //datagramChannel.send(bBuf, a);
 
         for(int i = 0; i < bArr.length; i += 32757) {
             int length = Math.min(32757, bArr.length - i);
             bBuf = ByteBuffer.wrap(bArr, i, length);
-            datagramChannel.send(bBuf, a);
+            //datagramChannel.send(bBuf, a);
         }
     }
 
-    public String receive() throws IOException {
-        StringBuilder answer = new StringBuilder();
-        ByteBuffer f = ByteBuffer.allocate(32757);
-        SocketAddress s = datagramChannel.receive(f);
+    public String receive() {
+        byte[] buffer = new byte[1024];
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            while(!answer.toString().endsWith("\04")) {
-                for (int i = 0; i < 10 && s == null; i++) {
-                    try {
-                        Thread.sleep(1000);
-                        s = datagramChannel.receive(f);
+        DatagramPacket reply = new DatagramPacket(buffer, buffer.length, this.socketAddress);
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(s == null) {
-                    System.out.println("no datagram was immediately available");
-                    return null;
-                }
-                out.write(f.array());
-                answer.append(out.toString().replaceAll("\00", ""));
-                f.clear();
-            }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            do {
+                this.datagramSocket.receive(reply);
+                out.write(reply.getData(), reply.getOffset(), reply.getLength());
+            } while (reply.getLength() == buffer.length);
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return answer.deleteCharAt(answer.length() - 1).toString();
+        return out.toString();
+
     }
 }
