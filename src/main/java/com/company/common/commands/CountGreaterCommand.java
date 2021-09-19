@@ -16,6 +16,10 @@ public class CountGreaterCommand extends AbstractCommand {
     }
 
     @Override
+    public String execute(String strArgs, Object commandArgs) {
+        return execute("-num " + commandArgs.toString());
+    }
+    @Override
     public String execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();

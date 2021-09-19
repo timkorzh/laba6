@@ -58,10 +58,15 @@ public class CommandSender {
 
     public String receive() throws IOException {
         StringBuilder answer = new StringBuilder();
+
+
         ByteBuffer f = ByteBuffer.allocate(32757);
-        SocketAddress s = datagramChannel.receive(f);
+        SocketAddress s ;
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            s=datagramChannel.receive(f);
+
             while(!answer.toString().endsWith("\04")) {
                 for (int i = 0; i < 10 && s == null; i++) {
                     try {
@@ -84,6 +89,14 @@ public class CommandSender {
             e.printStackTrace();
         }
 
-        return answer.deleteCharAt(answer.length() - 1).toString();
+
+
+       if (answer==null){
+           return null;
+       } else {
+           return answer.deleteCharAt(answer.length() - 1).toString();
+       }
+
+
     }
 }

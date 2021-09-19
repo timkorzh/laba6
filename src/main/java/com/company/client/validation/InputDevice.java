@@ -67,7 +67,7 @@ class FormOfEducationValidator implements IValidator {
               //  return true;
             //}
                 //Integer.parseInt(input);
-                return input == null || input.isEmpty() || Integer.parseInt(input) < FormOfEducation.values().length;
+                return input == null || input.isEmpty() || input.equals("null")|| Integer.parseInt(input) < FormOfEducation.values().length;
         } catch (NumberFormatException e) {
             return  false;
         }
@@ -140,7 +140,7 @@ class AdminPassportValidator implements IValidator {
 
     @Override
     public boolean IsValid(String input) {
-        return input.matches("^\\d{4}\\s\\d{6}");
+        return input == null || input.isEmpty() || input.equals("null") || input.matches("^\\d{4}\\s\\d{6}");
     }
 
     @Override
@@ -153,7 +153,7 @@ class AdminLocationValidator implements IValidator {
 
     @Override
     public boolean IsValid(String input) {
-        return input.matches("((?<=^|\\;)(?:\\d+[.,]\\d+|\\d+)(?:\\;|$)){3}");
+        return input.matches("\\d?(?>[.,]\\d*)?;\\d+(?>[.,]\\d*)?;\\-?\\d*(?>[.,]\\d*)?");
     }
 
     @Override
@@ -284,7 +284,9 @@ public class InputDevice {
                 Admin.setName(questions.get(6).answer);
             }
             if (questions.get(7).answer != null) {
-                Admin.setPassportID(questions.get(7).answer);
+                if(questions.get(7).answer.equals("null") || questions.get(7).answer.isEmpty()) {
+                    Admin.setPassportID(null);
+                }
             }
             if (questions.get(8).answer != null) {
                 Admin.setLocation(new Location(questions.get(8).answer));
@@ -314,9 +316,12 @@ public class InputDevice {
 
     public void EditFromFile(StudyGroup studyGroup, String CommandArgs) {
 
+
         for(quiz Question : questions) {
             Pattern p = Pattern.compile("-" + Question.ScriptName + "(.+?)( -|$)");
             Matcher m = p.matcher(CommandArgs);
+
+
             if (m.find()) {
 
                 if (Question.validator != null) {
@@ -341,7 +346,7 @@ public class InputDevice {
             studyGroup.setStudentsCount(Integer.parseInt(questions.get(2).answer));
         }
         if (questions.get(3).answer != null) {
-            if(questions.get(3).answer.equals("")) {
+            if(questions.get(3).answer.equals("null")) {
                 studyGroup.setFormOfEducation(null);
             } else {
                 studyGroup.setFormOfEducation(FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)]);
@@ -361,7 +366,11 @@ public class InputDevice {
             Admin = new Person();
             Admin.setName(questions.get(6).answer);
             if (questions.get(7).answer != null) {
+                if(questions.get(7).answer.equals("null") || questions.get(7).answer.isEmpty()) {
+                    Admin.setPassportID(null);
+                    }
                 Admin.setPassportID(questions.get(7).answer);
+
             }
             if (questions.get(8).answer != null) {
                 Admin.setLocation(new Location(questions.get(8).answer));
@@ -413,7 +422,7 @@ public class InputDevice {
         }
         FormOfEducation f = null;
         String formOfEducation = questions.get(3).answer;
-        if(formOfEducation != null && !formOfEducation.isEmpty()) {
+        if(formOfEducation != null && !formOfEducation.isEmpty() && !formOfEducation.equals("null")) {
             f = FormOfEducation.values()[Integer.parseInt(formOfEducation)];
         }
 
@@ -423,7 +432,12 @@ public class InputDevice {
         if (questions.get(5).answer != null && admValid.getExist()) {
             Admin = new Person();
             Admin.setName(questions.get(6).answer);
-            Admin.setPassportID(questions.get(7).answer);
+
+            if(questions.get(7).answer.equals("null") || questions.get(7).answer.isEmpty()) {
+                Admin.setPassportID(null);
+            } else {
+                Admin.setPassportID(questions.get(7).answer);
+            }
             Admin.setLocation(new Location(questions.get(8).answer));
 
         }
@@ -451,6 +465,31 @@ public class InputDevice {
             return null;
         }
     }
+    public StudyGroup updateFromFile(String CommandArgs)  {
+
+
+
+        try {
+            Pattern p = Pattern.compile("-id\\s(\\d+)");
+            Matcher m = p.matcher(CommandArgs);
+            if(m.find()) {
+                int groupId = Integer.parseInt(m.group(1));
+                StudyGroup newGroup = new StudyGroup();
+                newGroup.setId(groupId);
+                this.EditFromFile(newGroup, CommandArgs);
+                return newGroup;
+            } else {
+                System.out.println("Не нашёл такой id");
+            }
+
+        }
+        catch (InputMismatchException Ex) {
+            System.out.println("Введите число");
+            return null;
+        }
+        return null;
+    }
+
     public StudyGroup addFromFile(String CommandArgs) {
 
         boolean ImportantQuestionMistake = false;
@@ -487,7 +526,7 @@ public class InputDevice {
         }
         FormOfEducation f = null;
         if (questions.get(3).answer != null) {
-            if(questions.get(3).answer.equals("")) {
+            if(questions.get(3).answer.equals("null")) {
                 f = null;
             } else {
                 f = FormOfEducation.values()[Integer.parseInt(questions.get(3).answer)];
@@ -500,7 +539,11 @@ public class InputDevice {
         if (questions.get(5).answer != null && admValid.getExist()) {
             Admin = new Person();
             Admin.setName(questions.get(6).answer);
-            Admin.setPassportID(questions.get(7).answer);
+            if(questions.get(7).answer.equals("null") || questions.get(7).answer.isEmpty()) {
+                Admin.setPassportID(null);
+            } else {
+                Admin.setPassportID(questions.get(7).answer);
+            }
             Admin.setLocation(new Location(questions.get(8).answer));
 
         }

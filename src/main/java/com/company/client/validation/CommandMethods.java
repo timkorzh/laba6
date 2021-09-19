@@ -4,6 +4,7 @@ import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.common.collection_objects.FormOfEducation;
 import com.company.common.collection_objects.Semester;
 import com.company.common.collection_objects.StudyGroup;
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -70,26 +71,22 @@ public class CommandMethods {
         }
     }
 
-    public Path readExecuteFilePath() {
+    public String readExecuteFilePath() {
 
         Scanner scanner = new Scanner(System.in);
         String ExecuteFilePath = scanner.next();
         Path path = Paths.get(ExecuteFilePath);
-        if (!((new File(path.toString())).exists())) {
-            System.out.println("Не нашёл такой файл, пекарб((");
-            return null;
-        } else {
-            return path;
-        }
+        return ExecuteFilePath;
+
 
 
     }
-    public int readFilterSem() {
+    public int readFilterSem() throws InputMismatchException {
         int Sem;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите semester, по которому хотите отсортировать: " + Semester.GetStringValues());
-        Sem = scanner.nextInt();
-        return Sem;
+            Sem = scanner.nextInt();
+            return Sem;
 
     }
     public void filterBySem(CollectionManagement collectionManagement, Integer Sem) {

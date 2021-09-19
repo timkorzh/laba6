@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.timco</groupId>
-    <artifactId>laba6-client</artifactId>
+    <artifactId>laba6-server</artifactId>
     <version>1</version>
 
     <properties>
@@ -38,7 +38,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.company.client.CLient.Client</mainClass>
+                            <mainClass>com.company.server.Lab6ServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

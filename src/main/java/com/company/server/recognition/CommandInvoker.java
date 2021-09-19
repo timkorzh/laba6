@@ -54,11 +54,11 @@ public class CommandInvoker {
     public String execute(String inputString, Object args) {
         String commandName, commandArgs;
         commandName = inputString.split("\\s")[0];
-        Pattern p = Pattern.compile("\\s-.*");
+        Pattern p = Pattern.compile("\\s(-.*)");
         Matcher m = p.matcher(inputString);
         if (m.find()) {
 
-            commandArgs = m.group(0).substring(2);
+            commandArgs = m.group(1);
         } else {
             commandArgs = null;
         }

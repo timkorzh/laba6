@@ -1,6 +1,8 @@
 package com.company.common.collection_objects;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.InputMismatchException;
 
 public class Location implements Serializable {
     public Location() {
@@ -10,9 +12,10 @@ public class Location implements Serializable {
 
     }
     public Location(String location) {
-        this.x = Double.parseDouble(location.split(";")[0].trim().replace(',', '.'));
-        this.y = Long.parseLong(location.split(";")[1].trim());
-        this.z = Float.parseFloat(location.split(";")[2].trim().replace(',', '.'));
+location= location+" ";
+        setX(location.split(";")[0].trim().replace(',', '.'));
+        setY(location.split(";")[1].trim());
+        setZ(location.split(";")[2].trim().replace(',', '.'));
 
     }
 
@@ -24,20 +27,50 @@ public class Location implements Serializable {
 
     private Double x;
     public Double getX() {
-
         return x;
+    }
+    public void setX(String x) {
+        try {
+            if(x == null || x.isEmpty()){
+                this.x = null;
+            } else {
+                Double.parseDouble(x);
+            }
+        } catch (NumberFormatException e) {
+            this.x = null;
+        }
     }
 
     private Long y;
     public Long getY() {
-
         return y;
+    }
+    public void setY(String y) {
+        try {
+            if(y == null || y.isEmpty()){
+                this.y = null;
+            } else {
+                this.y = Long.parseLong(y);
+            }
+        } catch (NumberFormatException e) {
+            this.y = null;
+        }
     }
 
     private float z;
     public float getZ() {
-
         return z;
+    }
+    public void setZ(String z) {
+        try {
+            if(z == null || z.isEmpty()){
+                this.z = 0;
+            } else {
+               this.z = Float.parseFloat(z);
+            }
+        } catch (NumberFormatException e) {
+            this.z = 0;
+        }
     }
 
     public static void main(String[] args) {

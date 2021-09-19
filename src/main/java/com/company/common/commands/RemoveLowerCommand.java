@@ -15,6 +15,10 @@ public class RemoveLowerCommand extends AbstractCommand {
         this.collectionManagement = collectionManagement;
     }
 
+    @Override
+    public String execute(String strArgs, Object commandArgs) {
+        return execute("-id " + commandArgs.toString());
+    }
 
     @Override
     public String execute(String CommandArgs) {

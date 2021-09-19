@@ -50,47 +50,64 @@ public class XMLParser {
                 studyGroup.getCoordinates().setY(Float.valueOf(coordinatesY.getTextContent()));
                 Node studentsCount = el.getElementsByTagName("StudentsCount").item(0);
                 studyGroup.setStudentsCount(Integer.valueOf(studentsCount.getTextContent()));
+
+
                 Node formOfEducation = el.getElementsByTagName("FormOfEducation").item(0);
-                studyGroup.setFormOfEducation(Enum.valueOf(FormOfEducation.class, formOfEducation.getTextContent()));
-                Node semester = el.getElementsByTagName("Semester").item(0);
+               if (formOfEducation!=null) studyGroup.setFormOfEducation(Enum.valueOf(FormOfEducation.class, formOfEducation.getTextContent()));
+
+               Node semester = el.getElementsByTagName("Semester").item(0);
                 studyGroup.setSemesterEnum(Semester.valueOf(semester.getTextContent()));
                 Node creationDate = el.getElementsByTagName("CreationDate").item(0);
                 studyGroup.getCreationDate(creationDate.getTextContent()); //Для этой херни создан метод getCreationDate в StudyGroup
+
+               //
                 Node AdminElement = (el.getElementsByTagName("groupAdmin").item(0));
+                if(AdminElement != null) {
 
-                Node groupAdminName = null;
-                Node groupAdminPassport = null;
-                Node groupAdminLocationX = null;
-                Node groupAdminLocationY = null;
-                Node groupAdminLocationZ = null;
+                    Node groupAdminName = null;
+                    Node groupAdminPassport = null;
+                    Node groupAdminLocationX = null;
+                    Node groupAdminLocationY = null;
+                    Node groupAdminLocationZ = null;
 
-                for (int I = 0; I < AdminElement.getChildNodes().getLength(); I++) {
-                    if (AdminElement.getChildNodes().item(I).getNodeType() == Node.ELEMENT_NODE) {
-                        Element elem = (Element) AdminElement.getChildNodes().item(I);
+                    for (int I = 0; I < AdminElement.getChildNodes().getLength(); I++) {
+                        if (AdminElement.getChildNodes().item(I).getNodeType() == Node.ELEMENT_NODE) {
+                            Element elem = (Element) AdminElement.getChildNodes().item(I);
 
-                        switch (elem.getTagName()) {
-                            case ("GroupAdminName"):
-                                groupAdminName = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminPassport"):
-                                groupAdminPassport = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationX"):
-                                groupAdminLocationX = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationY"):
-                                groupAdminLocationY = AdminElement.getChildNodes().item(I);
-                            case ("GroupAdminLocationZ"):
-                                groupAdminLocationZ = AdminElement.getChildNodes().item(I);
-                                break;
+                            switch (elem.getTagName()) {
+                                case ("GroupAdminName"):
+                                    groupAdminName = AdminElement.getChildNodes().item(I);
+                                case ("GroupAdminPassport"):
+                                    groupAdminPassport = AdminElement.getChildNodes().item(I);
+                                case ("GroupAdminLocationX"):
+                                    groupAdminLocationX = AdminElement.getChildNodes().item(I);
+                                case ("GroupAdminLocationY"):
+                                    groupAdminLocationY = AdminElement.getChildNodes().item(I);
+                                case ("GroupAdminLocationZ"):
+                                    groupAdminLocationZ = AdminElement.getChildNodes().item(I);
+                                    break;
 
+                            }
                         }
                     }
+
+                    //if(groupAdminLocationX != null) {}
+                    //assert groupAdminName != null;
+                    //assert groupAdminLocationY != null;
+
+                    Location l = new Location();
+//V1
+                    l.setX((groupAdminLocationX != null) ? (groupAdminLocationX.getTextContent()) : (""));
+                    l.setY((groupAdminLocationY != null) ? (groupAdminLocationY.getTextContent()) : (""));
+                    l.setZ((groupAdminLocationZ != null) ? (groupAdminLocationZ.getTextContent()) : (""));
+
+                    Person person = new Person(
+                            ((groupAdminName != null) ? (groupAdminName.getTextContent()) : (null)), //имя админа
+                            ((groupAdminPassport != null) ? (groupAdminPassport.getTextContent()) : (null)), l
+                    );
+                    studyGroup.setGroupAdmin(person);
                 }
 
-                assert groupAdminLocationX != null;
-                assert groupAdminName != null;
-                assert groupAdminLocationY != null;
-                Person person = new Person(groupAdminName.getTextContent(), groupAdminPassport.getTextContent(),
-                        new Location(groupAdminLocationX.getTextContent() + ";" + groupAdminLocationY.getTextContent() + ";" + groupAdminLocationZ.getTextContent()));
-                studyGroup.setGroupAdmin(person);
 
                 collectionManagement.getCollection().add(studyGroup);
             }
@@ -123,8 +140,11 @@ public class XMLParser {
                 name.setTextContent(group.getName());
                 Element studentsCount = document.createElement("StudentsCount");
                 studentsCount.setTextContent(group.getStudentsCount().toString());
+
+
                 Element FormOfEducation = document.createElement("FormOfEducation");
-                FormOfEducation.setTextContent(group.getFormOfEducation().toString());
+                if(group.getFormOfEducation() != null) FormOfEducation.setTextContent(group.getFormOfEducation().toString());
+
                 Element coordinatesX = document.createElement("Coordinates_X");
                 coordinatesX.setTextContent(String.valueOf(group.getCoordinates().getX()));
                 Element coordinatesY = document.createElement("Coordinates_Y");
@@ -133,32 +153,44 @@ public class XMLParser {
                 date.setTextContent(group.getCreationDate().toString());
                 Element semester = document.createElement("Semester");
                 semester.setTextContent(group.getSemesterEnum().toString());
-                Element groupAdminName = document.createElement("GroupAdminName");
-                groupAdminName.setTextContent(group.getGroupAdmin().getName());
-                Element groupAdminPassport = document.createElement("GroupAdminPassport");
-                groupAdminPassport.setTextContent(group.getGroupAdmin().getPassportID());
-                Element groupAdminLocationX = document.createElement("GroupAdminLocationX");
-                groupAdminLocationX.setTextContent(group.getGroupAdmin().getLocation().getX().toString());
-                Element groupAdminLocationY = document.createElement("GroupAdminLocationY");
-                groupAdminLocationY.setTextContent(group.getGroupAdmin().getLocation().getY().toString());
-                Element groupAdminLocationZ = document.createElement("GroupAdminLocationZ");
-                groupAdminLocationZ.setTextContent(String.valueOf(group.getGroupAdmin().getLocation().getZ()));
+                Element groupAdminName = null;
+                Element groupAdminPassport = null;
+                Element groupAdminLocationX = null;
+                Element groupAdminLocationY = null;
+                Element groupAdminLocationZ = null;
+
+                if(group.getGroupAdmin() != null) {
+                    groupAdminName = document.createElement("GroupAdminName");
+                    groupAdminName.setTextContent(group.getGroupAdmin().getName());
+                    groupAdminPassport = document.createElement("GroupAdminPassport");
+                    if(group.getGroupAdmin().getPassportID() != null) groupAdminPassport.setTextContent(group.getGroupAdmin().getPassportID());
+                    groupAdminLocationX = document.createElement("GroupAdminLocationX");
+                    if(group.getGroupAdmin().getLocation().getX() != null) groupAdminLocationX.setTextContent(group.getGroupAdmin().getLocation().getX().toString());
+                    groupAdminLocationY = document.createElement("GroupAdminLocationY");
+                    if(group.getGroupAdmin().getLocation().getY() != null) groupAdminLocationY.setTextContent(group.getGroupAdmin().getLocation().getY().toString());
+                    groupAdminLocationZ = document.createElement("GroupAdminLocationZ");
+                    if(group.getGroupAdmin().getLocation().getZ() != 0) groupAdminLocationZ.setTextContent(String.valueOf(group.getGroupAdmin().getLocation().getZ()));
+
+                }
 
                 studyGroup.appendChild(id);
                 studyGroup.appendChild(name);
                 studyGroup.appendChild(coordinatesX);
                 studyGroup.appendChild(coordinatesY);
                 studyGroup.appendChild(studentsCount);
-                studyGroup.appendChild(FormOfEducation);
+                if(group.getFormOfEducation() != null) studyGroup.appendChild(FormOfEducation);
                 studyGroup.appendChild(semester);
                 studyGroup.appendChild(date);
                 Element groupAdmin = document.createElement("groupAdmin");
-                groupAdmin.appendChild(groupAdminName);
-                groupAdmin.appendChild(groupAdminPassport);
-                groupAdmin.appendChild(groupAdminLocationX);
-                groupAdmin.appendChild(groupAdminLocationY);
-                groupAdmin.appendChild(groupAdminLocationZ);
-                studyGroup.appendChild(groupAdmin);
+                if(groupAdmin != null) {
+                    if(groupAdminName != null) groupAdmin.appendChild(groupAdminName);
+                    if(groupAdminPassport != null) groupAdmin.appendChild(groupAdminPassport);
+                    if(groupAdminLocationX != null) groupAdmin.appendChild(groupAdminLocationX);
+                    if(groupAdminLocationY != null) groupAdmin.appendChild(groupAdminLocationY);
+                    if(groupAdminLocationZ != null) groupAdmin.appendChild(groupAdminLocationZ);
+                    studyGroup.appendChild(groupAdmin);
+                }
+
                 root.appendChild(studyGroup);
             }
 

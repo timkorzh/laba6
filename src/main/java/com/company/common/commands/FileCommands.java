@@ -3,6 +3,11 @@ package com.company.common.commands;
 import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.server.processing.parsers.XMLParser;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class FileCommands {
     private String filePath;
     private SaveCommand saveCommand;
@@ -31,6 +36,23 @@ public class FileCommands {
 
         @Override
         public String execute(String CommandArgs) {
+
+            String fileName = System.getenv("INPUT_FILE_PATH");
+            if(fileName == null) {
+                System.out.println("Переменная среды \"INPUT_FILE_PATH\" пустая. Методы load и save не будут работать(");
+            }
+            else {
+                File file = new File(fileName);
+                try {
+                    file.toPath().toRealPath();
+                    if (fileName.matches("[/\\\\]dev.*")) {
+                        return "Не могу исполнить данный файл";
+                    }
+                } catch (IOException e) {
+                    return "Не хулигань-_-";
+                }
+            }
+            filePath = fileName;
             if (filePath != null && !filePath.matches("[/\\\\]dev.*")) {
                 XMLParser xmlParser = new XMLParser(filePath);
                 xmlParser.saveCollection(collectionManagement);
@@ -55,6 +77,13 @@ public class FileCommands {
 
         @Override
         public String execute(String filePath) {
+            Pattern p = Pattern.compile("-path\\s(.+)");
+            Matcher m = p.matcher(filePath);
+            if(m.find()) {
+                filePath = m.group(1);
+            } else {
+                return "Не указан параметр Path";
+            }
             if(filePath != null) {
                 if (!filePath.matches("[/\\\\]dev.*"))
                     FileCommands.this.filePath = filePath;

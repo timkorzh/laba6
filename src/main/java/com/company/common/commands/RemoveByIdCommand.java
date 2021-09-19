@@ -15,6 +15,11 @@ public class RemoveByIdCommand extends AbstractCommand {
     }
 
     @Override
+    public String execute(String strArgs, Object commandArgs) {
+    return execute("-id " + commandArgs.toString());
+    }
+
+    @Override
     public String execute(String CommandArgs) {
         //InputDevice device = new InputDevice();
         CommandMethods device = new CommandMethods();
