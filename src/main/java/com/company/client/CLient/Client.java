@@ -53,7 +53,9 @@ public class Client {
                             } else {
                                 studyGroup = inputDevice.add();
                             }
-                            commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
+                            if(studyGroup != null) {
+                                commandSender.send(commandName + "\n", studyGroup, this.commandSender.getSocketAddress());
+                            }
                             break;
                         case "update":
                             if(hasArgs) {

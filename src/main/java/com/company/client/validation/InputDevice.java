@@ -520,6 +520,7 @@ public class InputDevice {
         }
         if (ImportantQuestionMistake) {
             System.out.println("Не получен(Ы) ответы на важные вопросы, идите лесом");
+            return null;
         }
         for (quiz answer : questions) {
             System.out.println(answer.answer);

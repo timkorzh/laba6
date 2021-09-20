@@ -17,8 +17,10 @@ import java.util.regex.Pattern;
 
 public class ScriptExecute {
     Client client;
+    public static int executionCount = 0;
     public ScriptExecute(Client client) {this.client = client;}
     public String execute(String CommandArgs) {
+        executionCount ++;
         CommandSender commandSender = client.commandSender;
         boolean finished = false;
         String result = "";
@@ -61,19 +63,27 @@ public class ScriptExecute {
                 InputDevice inputDevice = new InputDevice();
                 StudyGroup studyGroup;
 
-                label:
+
                 do {
                     String command = FileScanner.nextLine();
-                    Matcher cmd = pCommand.matcher(command);
-                    cmd.find();
-                    String commandName = cmd.group(0).trim();
-                    Matcher args = pArgs.matcher(command);
-                    String commandArgues = args.group(1).trim();
-                    boolean hasArgs = args.find();
 
                     if(command == null || command.isEmpty()) {
                         continue;
                     }
+
+                    Matcher cmd = pCommand.matcher(command);
+                    cmd.find();
+                    String commandName = cmd.group(0).trim();
+                    Matcher args = pArgs.matcher(command);
+                    String commandArgues = null;
+                    boolean hasArgs = args.find();
+
+                    if(hasArgs){
+                        commandArgues = args.group(1).trim();
+                    }
+
+
+
                     System.out.println("Выполняю: " + command);
                     switch (commandName) {
                         case "add":
@@ -82,8 +92,10 @@ public class ScriptExecute {
                             } else {
                                 studyGroup = inputDevice.add();
                             }
-                            commandSender.send(commandName + "\n", studyGroup, commandSender.getSocketAddress());
-                            break label;
+                            if(studyGroup != null) {
+                                commandSender.send(commandName + "\n", studyGroup, commandSender.getSocketAddress());
+                            }
+                            break;
                         case "update":
                             if (hasArgs) {
                                 studyGroup = inputDevice.updateFromFile(commandArgues);
@@ -93,7 +105,7 @@ public class ScriptExecute {
                             if (studyGroup != null) {
                                 commandSender.send(commandName + "\n", studyGroup, commandSender.getSocketAddress());
                             }
-                            break label;
+                            break;
                         case "filter_by_semester_enum":
                             int FBS;
                             try {
@@ -103,15 +115,19 @@ public class ScriptExecute {
                                 break;
                             }
                             commandSender.send(commandName + "\n", String.valueOf(FBS), commandSender.getSocketAddress());
-                            break label;
+                            break;
                         case "execute_script":
+                            if(executionCount > 2) {
+                                System.out.println("Слон не получил вечный кайф((");
+                            break; //статическая переменная чтобы не вызвать самого себя больше двух раз
+                            }
                             ScriptExecute scriptExecute = new ScriptExecute(client);
                             if(hasArgs) {
                                 scriptExecute.execute(commandArgues);
                             } else {
                                 scriptExecute.execute(null);
                             }
-                            break label;
+                            break;
                         case "remove_by_id" :
                         case "remove_lower" :
                         case "remove_higher" :
@@ -124,12 +140,15 @@ public class ScriptExecute {
                         default:
                             commandSender.send(command + "\n", commandSender.getSocketAddress());
                             break;
+
                     }
 
-                    commandSender.receive();  //заплатка от получения старого ответа
+
+                    //commandSender.receive();  //заплатка от получения старого ответа
                     String reply = commandSender.receive();
                     System.out.println(reply);
                 } while (FileScanner.hasNext());
+                    FileScanner.close();
             }catch (IOException  e) {
                 System.out.println("Мне жаль, что так вышло((((");
             }
@@ -137,6 +156,7 @@ public class ScriptExecute {
         else {
             System.out.println(result);
         }
+        executionCount --;
         return result;
         }
     }
