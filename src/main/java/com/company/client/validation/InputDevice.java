@@ -105,7 +105,10 @@ class AdminExistsValidator implements IValidator {
 
     @Override
     public boolean IsValid(String input) {
-
+        if(input.isEmpty() || input.matches("[Nn,Нн]\\w*")) {
+            Exist = false;
+            return true;
+        }
         if(input.isEmpty()) {
             Exist = false;
             return true;

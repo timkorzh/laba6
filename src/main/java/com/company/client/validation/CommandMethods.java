@@ -4,7 +4,6 @@ import com.company.server.processing.collection_manage.CollectionManagement;
 import com.company.common.collection_objects.FormOfEducation;
 import com.company.common.collection_objects.Semester;
 import com.company.common.collection_objects.StudyGroup;
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -24,7 +24,7 @@ public class CommandSender {
 
     private DatagramChannel datagramChannel;
 
-      public void send(String command, SocketAddress a) throws IOException {
+   public void send(String command, SocketAddress a) throws IOException {
         send(new CommandParcel(command), a);
     }
 
@@ -33,7 +33,7 @@ public class CommandSender {
     }
 
     public void send(CommandParcel commandParcel, SocketAddress a) throws IOException {
-        //TODO: реализацию можно вынести в специальный поток
+
         ByteBuffer bBuf;
         byte[] bArr;
         try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
